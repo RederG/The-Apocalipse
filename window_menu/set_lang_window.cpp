@@ -13,7 +13,7 @@ namespace SetLanguageWindow{
 
     sf::RectangleShape line;
 
-    std::ofstream file;
+    std::fstream file;
 
     std::list<sf::Text> all_languages_txt;
     
@@ -82,8 +82,8 @@ namespace SetLanguageWindow{
                         for (const std::string str : all_languages.at(Main::lang())){
                             if(txt.getString() == str){
                                 Main::lang(lang_value.at(i));
-                                file.open("../res/lang.txt");
-                                file << static_cast<int>(lang_value.at(i));
+                                file.open("../res/language.save", std::ios::out | std::ios::binary);
+                                file.write(reinterpret_cast<char*>(&i), sizeof(int));
                                 file.close();
                                 Main::first_drawing(true);
                                 Debugging::write("LANGUAGE SETS TO " + str, Debugging::get_state_of(Debugging::Button));
