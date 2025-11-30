@@ -292,7 +292,7 @@ void language_setting(){
 
 void write_work_of_today(){
     std::vector<std::string> all_works = {
-        "- Let's make structures and we'll make this world beautiful",
+        "- Let's make structures' content and roofs !!!",
     };
     Debugging::write("WORK OF TODAY :");
     for(int i = 0; i < all_works.size(); i++)
