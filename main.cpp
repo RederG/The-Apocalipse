@@ -259,16 +259,16 @@ void language_setting(){
     bool error = false;
 
     // Language configuration
-    std::ifstream file_read("../res/lang.txt");
+    std::ifstream file_read("../res/language.save", std::ios::in | std::ios::binary);
     if (file_read.is_open()){
-        int file_content;
-        file_read >> file_content;
+        int file_content_lang;
+        file_read.read(reinterpret_cast<char*>(&file_content_lang), sizeof(int));
         for (const auto [key, value] : lang_value){
-            if (file_content != key) {
+            if (file_content_lang != key) {
                 Main::lang(Main::Languages::english);
                 error = true;
             }
-            else if (file_content == key){
+            else if (file_content_lang == key){
                 Main::lang(value);
                 error = false;
                 Debugging::write("Loading the language completed", Debugging::get_state_of(Debugging::Description));
@@ -281,9 +281,10 @@ void language_setting(){
     if (error == true){
         Debugging::write("ERROR : LOADING THE LANGUAGE FAILED", Debugging::get_state_of(Debugging::Description));
         Debugging::write("LANGUAGE SETS TO ENGLISH", Debugging::get_state_of(Debugging::Description));
-        std::ofstream file_write("../res/lang.txt");
+        std::ofstream file_write("../res/language.save", std::ios::out | std::ios::binary);
         if (file_write.is_open()){
-            file_write << "0";
+            int lang_value = 0;
+            file_write.write(reinterpret_cast<char*>(&lang_value), sizeof(int));
         } 
         file_write.close();
         Debugging::write("ERROR CORRECTION COMPLETED\n", Debugging::get_state_of(Debugging::Description));
@@ -292,7 +293,7 @@ void language_setting(){
 
 void write_work_of_today(){
     std::vector<std::string> all_works = {
-        "- Let's make structures' content and roofs !!!",
+        "- Let's make structures' content and roofs !!!'",
     };
     Debugging::write("WORK OF TODAY :");
     for(int i = 0; i < all_works.size(); i++)
