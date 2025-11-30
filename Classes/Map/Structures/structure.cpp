@@ -1,5 +1,6 @@
 #include "structure.hpp"
 #include "../../InteractiveObjects/wall.hpp"
+#include "../../InteractiveObjects/roof.hpp"
 
 namespace Structure{
 
@@ -103,6 +104,11 @@ namespace Structure{
             
             structure.contains_walls = true;
         }
+    }
+
+    void set_roof_of(Instance& structure){
+        structure.contain.roof = nullptr;
+        structure.contain.roof = new Roof::Object(Roof::Type::default_roof, structure.position);
     }
 
 }

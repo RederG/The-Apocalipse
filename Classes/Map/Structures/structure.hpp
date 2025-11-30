@@ -28,7 +28,7 @@
 
         struct Contain{
             std::vector<InteractiveObjects::Object*> walls;
-            InteractiveObjects::Object* roof;
+            InteractiveObjects::Object* roof = nullptr;
         };
 
         const std::map<std::string, std::map<EntryPosition, sf::IntRect>> entry_texture{
@@ -57,6 +57,8 @@
         sf::Image create_image_of(Instance structure);
 
         void set_walls_of(Instance& structure);
+
+        void set_roof_of(Instance& structure);
     };
 
 #endif

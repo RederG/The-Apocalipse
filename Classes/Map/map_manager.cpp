@@ -397,6 +397,8 @@ namespace Map{
                 Structure::Instance& structure = StructureManager::get_structure(Main::get_pair2i_of(area->get_position()));
                 if(!structure.contains_walls)
                     Structure::set_walls_of(structure);
+                if(structure.contain.roof == nullptr)
+                    Structure::set_roof_of(structure);
             }
         }
     }
@@ -414,13 +416,15 @@ namespace Map{
                     for(auto wall : structure.contain.walls)
                         this->sorted_elements_to_draw.push_back(wall);
                 }
-                else if(std::find(this->all_struct_roof_to_draw.begin(), this->all_struct_roof_to_draw.end(), structure.position) != this->all_struct_roof_to_draw.end()){
+            }
+
+            MapElement::Help::sort_by_positions(this->sorted_elements_to_draw);
+            for(auto structure : all_structs){
+                if(std::find(this->all_struct_roof_to_draw.begin(), this->all_struct_roof_to_draw.end(), structure.position) != this->all_struct_roof_to_draw.end()){
                     if(structure.contain.roof != nullptr)
                         this->sorted_elements_to_draw.push_back(structure.contain.roof);
                 }
             }
-
-            MapElement::Help::sort_by_positions(this->sorted_elements_to_draw);
             this->elements_to_draw = this->sorted_elements_to_draw;
 
             this->sorting_elements = false;
