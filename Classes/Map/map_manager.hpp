@@ -348,7 +348,8 @@
                 std::pair<float, float> player_area_y_limits = std::pair<float, float>(0,0);
                 std::vector<MapElement::Object*> sorted_elements_to_draw;
                 std::vector<MapElement::Object*> elements_to_draw;
-                std::vector<sf::Vector2i> all_struct_position_to_draw;
+                std::vector<sf::Vector2i> all_struct_contain_to_draw;
+                std::vector<sf::Vector2i> all_struct_roof_to_draw;
                 bool sorting_elements = false;
         };
 

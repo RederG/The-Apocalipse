@@ -73,8 +73,8 @@ namespace Entity{
             sf::Vector2i entity_area = Entity::get_map()->get_area_position(this->map_position.x, this->map_position.y);
             if(StructureManager::is_structure(Main::get_pair2i_of(entity_area))){
                 Structure::Instance& structure = StructureManager::get_structure(Main::get_pair2i_of(entity_area));
-                for(int i = 0; i < structure.contain.size(); i++){
-                    if(structure.contain[i]->collides_with(this, Entity::get_map())){
+                for(int i = 0; i < structure.contain.walls.size(); i++){
+                    if(structure.contain.walls[i]->collides_with(this, Entity::get_map())){
                         collision = true;
                         break;
                     }
