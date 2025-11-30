@@ -1,0 +1,7 @@
+.vscode
+*.log
+Web
+*.o
+Players
+*.exe
+*.txt
