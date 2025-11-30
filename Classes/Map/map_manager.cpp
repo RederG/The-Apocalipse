@@ -410,9 +410,13 @@ namespace Map{
                 this->sorted_elements_to_draw.push_back(&*tomb);
             std::vector<Structure::Instance> all_structs = StructureManager::get_all();
             for(auto structure : all_structs){
-                if(std::find(this->all_struct_position_to_draw.begin(), this->all_struct_position_to_draw.end(), structure.position) != this->all_struct_position_to_draw.end()){
+                if(std::find(this->all_struct_contain_to_draw.begin(), this->all_struct_contain_to_draw.end(), structure.position) != this->all_struct_contain_to_draw.end()){
                     for(auto wall : structure.contain.walls)
                         this->sorted_elements_to_draw.push_back(wall);
+                }
+                else if(std::find(this->all_struct_roof_to_draw.begin(), this->all_struct_roof_to_draw.end(), structure.position) != this->all_struct_roof_to_draw.end()){
+                    if(structure.contain.roof != nullptr)
+                        this->sorted_elements_to_draw.push_back(structure.contain.roof);
                 }
             }
 
@@ -455,6 +459,7 @@ namespace Map{
 
         working_areas.clear();
         this->all_working_areas.clear();
+        this->all_struct_roof_to_draw.clear();
         for(float y = player_area.y - gen.y, y_window = 0; y <= player_area.y + gen.y; y++, y_window++){
             for(float x = player_area.x - gen.x, x_window = 0; x <= player_area.x + gen.x; x++, x_window++){
                 Area* area = this->get_area_at(x, y);
@@ -465,20 +470,22 @@ namespace Map{
 
                 area->set_window_position_to(window_position);
                 working_areas.push_back(area);
+
+                this->all_struct_roof_to_draw.push_back({x, y});
             }
         }
         this->all_working_areas = working_areas;
         
         gen = this->event_updating_size;
-        this->all_struct_position_to_draw.clear();
-        this->all_struct_position_to_draw.push_back(player_area);
+        this->all_struct_contain_to_draw.clear();
+        this->all_struct_contain_to_draw.push_back(player_area);
         bool skip = true;
         for(float y = player_area.y - gen.y, y_window = 0; y <= player_area.y + gen.y; y++, y_window++){
             for(float x = player_area.x - gen.x, x_window = 0; x <= player_area.x + gen.x; x++, x_window++){
                 Area* area = this->get_area_at(x, y);
                 this->all_render_areas.push_back(area);
                 if(!skip)
-                    this->all_struct_position_to_draw.push_back(area->get_position());
+                    this->all_struct_contain_to_draw.push_back(area->get_position());
                 skip = !skip;
             }
         }

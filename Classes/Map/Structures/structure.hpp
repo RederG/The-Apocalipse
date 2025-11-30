@@ -28,6 +28,7 @@
 
         struct Contain{
             std::vector<InteractiveObjects::Object*> walls;
+            InteractiveObjects::Object* roof;
         };
 
         const std::map<std::string, std::map<EntryPosition, sf::IntRect>> entry_texture{
