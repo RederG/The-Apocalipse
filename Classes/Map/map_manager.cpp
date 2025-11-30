@@ -411,8 +411,8 @@ namespace Map{
             std::vector<Structure::Instance> all_structs = StructureManager::get_all();
             for(auto structure : all_structs){
                 if(std::find(this->all_struct_position_to_draw.begin(), this->all_struct_position_to_draw.end(), structure.position) != this->all_struct_position_to_draw.end()){
-                    for(auto object : structure.contain)
-                        this->sorted_elements_to_draw.push_back(object);
+                    for(auto wall : structure.contain.walls)
+                        this->sorted_elements_to_draw.push_back(wall);
                 }
             }
 
