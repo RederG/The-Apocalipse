@@ -52,6 +52,7 @@ namespace Structure{
             if(AllTextures::get_structure(Main::get_pair2i_of(structure.position)) == nullptr)
                 AllTextures::set_structure(Main::get_pair2i_of(structure.position), create_image_of(structure));
             sf::Image img = AllTextures::get_structure(Main::get_pair2i_of(structure.position))->copyToImage();
+            structure.contain.walls.clear();
             unsigned int y = 0;
             for(unsigned int x = 0; x < 18; x++){
                 sf::Vector2i wall_position = {
@@ -62,7 +63,7 @@ namespace Structure{
                 if(wall_type == Wall::Type::with_window && StructureManager::is_structure({structure.position.x, structure.position.y - 1}))
                     wall_type = Wall::Type::simple;
                 if((wall_type == Wall::Type::with_door && structure.contains_doors) || (wall_type == Wall::Type::simple) || (wall_type == Wall::Type::down_simple) || (wall_type == Wall::Type::with_window))
-                    structure.contain.push_back(new Wall::Object(wall_type, wall_position));
+                    structure.contain.walls.push_back(new Wall::Object(wall_type, wall_position));
             }
             for(unsigned int y2 = 1; y2 < 17; y2++){
                 unsigned int x = 0;
@@ -74,7 +75,7 @@ namespace Structure{
                 if(wall_type == Wall::Type::down_with_window && StructureManager::is_structure({structure.position.x - 1, structure.position.y}))
                     wall_type = Wall::Type::down_simple;
                 if((wall_type == Wall::Type::down_with_door && structure.contains_doors) || (wall_type == Wall::Type::down_simple) || (wall_type == Wall::Type::down_with_window))
-                    structure.contain.push_back(new Wall::Object(wall_type, wall_position));
+                    structure.contain.walls.push_back(new Wall::Object(wall_type, wall_position));
                     
                 x = 17;
                 wall_position = {
@@ -85,7 +86,7 @@ namespace Structure{
                 if(wall_type == Wall::Type::down_with_window && StructureManager::is_structure({structure.position.x + 1, structure.position.y}))
                     wall_type = Wall::Type::down_simple;
                 if((wall_type == Wall::Type::down_with_door && structure.contains_doors) || (wall_type == Wall::Type::down_simple) || (wall_type == Wall::Type::down_with_window))
-                    structure.contain.push_back(new Wall::Object(wall_type, wall_position));
+                    structure.contain.walls.push_back(new Wall::Object(wall_type, wall_position));
             }
             y = 17;
             for(unsigned int x = 0; x < 18; x++){
@@ -97,7 +98,7 @@ namespace Structure{
                 if(wall_type == Wall::Type::with_window && StructureManager::is_structure({structure.position.x, structure.position.y + 1}))
                     wall_type = Wall::Type::simple;
                 if((wall_type == Wall::Type::with_door && structure.contains_doors) || (wall_type == Wall::Type::simple) || (wall_type == Wall::Type::down_simple) || (wall_type == Wall::Type::with_window))
-                    structure.contain.push_back(new Wall::Object(wall_type, wall_position));
+                    structure.contain.walls.push_back(new Wall::Object(wall_type, wall_position));
             }
             
             structure.contains_walls = true;
