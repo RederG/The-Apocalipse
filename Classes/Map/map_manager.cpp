@@ -471,7 +471,7 @@ namespace Map{
                 area->set_window_position_to(window_position);
                 working_areas.push_back(area);
 
-                this->all_struct_roof_to_draw.push_back({x, y});
+                this->all_struct_roof_to_draw.push_back({int(x), int(y)});
             }
         }
         this->all_working_areas = working_areas;
