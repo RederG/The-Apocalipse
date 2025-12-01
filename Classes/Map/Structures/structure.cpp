@@ -108,7 +108,10 @@ namespace Structure{
 
     void set_roof_of(Instance& structure){
         structure.contain.roof = nullptr;
-        structure.contain.roof = new Roof::Object(Roof::Type::default_roof, structure.position);
+        sf::Vector2i position = structure.position;
+        position.x *= 18;
+        position.y *= 18;
+        structure.contain.roof = new Roof::Object(Roof::Type::default_roof, position);
     }
 
 }
