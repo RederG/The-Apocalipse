@@ -185,7 +185,7 @@ namespace Tomb{
 
     void save_all_to(std::string destination_path, std::string inventories_path, std::string items_path){
         std::filesystem::remove_all(destination_path);
-        std::filesystem::create_directory(destination_path);
+        std::filesystem::create_directories(destination_path);
 
         if(std::filesystem::exists(inventories_path) && std::filesystem::exists(items_path)){
             for(auto tomb : container){

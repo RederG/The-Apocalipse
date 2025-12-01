@@ -26,6 +26,11 @@
             EntrySpecification right;
         };
 
+        struct Contain{
+            std::vector<InteractiveObjects::Object*> walls;
+            InteractiveObjects::Object* roof = nullptr;
+        };
+
         const std::map<std::string, std::map<EntryPosition, sf::IntRect>> entry_texture{
             {"up_down", {
                 {left,      {{0, 0}, {18, 1}}},
@@ -44,7 +49,7 @@
         struct Instance{
             sf::Vector2i position = {0, 0};
             Sides sides;
-            std::vector<InteractiveObjects::Object*> contain;
+            Contain contain;
             bool contains_walls = false;
             bool contains_doors = false;
         };
@@ -52,6 +57,8 @@
         sf::Image create_image_of(Instance structure);
 
         void set_walls_of(Instance& structure);
+
+        void set_roof_of(Instance& structure);
     };
 
 #endif
