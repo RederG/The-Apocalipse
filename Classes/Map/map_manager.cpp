@@ -442,12 +442,6 @@ namespace Map{
         if(this->sorting_elements)
             for(int i = 0; i < this->elements_to_draw.size(); i++)
                 this->elements_to_draw[i]->draw_to(this);
-        if(!this->sorting_elements)
-            for(int i = 0; i < this->sorted_elements_to_draw.size() && !this->sorting_elements; i++)
-                this->window_target->draw(this->sorted_elements_to_draw[i]->get_collision_rect(this));
-        if(this->sorting_elements)
-            for(int i = 0; i < this->elements_to_draw.size(); i++)
-                this->window_target->draw(this->elements_to_draw[i]->get_collision_rect(this));
               
         this->sorting_elements = true;
         Bullet::draw_all_bullets_to(this);

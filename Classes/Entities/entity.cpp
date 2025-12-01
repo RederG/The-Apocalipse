@@ -71,8 +71,8 @@ namespace Entity{
         bool collision = false;
         if(Entity::get_map() != nullptr){
             sf::Vector2i entity_area = Entity::get_map()->get_area_position(this->map_position.x, this->map_position.y);
-            for(int y = entity_area.y - 1; y < entity_area.y + 1; y++){
-                for(int x = entity_area.x - 1; x < entity_area.x + 1; x++){
+            for(int y = entity_area.y - 1; y <= entity_area.y + 1; y++){
+                for(int x = entity_area.x - 1; x <= entity_area.x + 1; x++){
                     if(StructureManager::is_structure({x, y})){
                         Structure::Instance& structure = StructureManager::get_structure(sf::Vector2i({x, y}));
                         for(int i = 0; i < structure.contain.walls.size(); i++){
