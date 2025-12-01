@@ -420,7 +420,8 @@ namespace Map{
 
             MapElement::Help::sort_by_positions(this->sorted_elements_to_draw);
             for(auto structure : all_structs){
-                if(std::find(this->all_struct_roof_to_draw.begin(), this->all_struct_roof_to_draw.end(), structure.position) != this->all_struct_roof_to_draw.end()){
+                if(std::find(this->all_struct_roof_to_draw.begin(), this->all_struct_roof_to_draw.end(), structure.position) != this->all_struct_roof_to_draw.end() &&
+                    std::find(this->all_struct_contain_to_draw.begin(), this->all_struct_contain_to_draw.end(), structure.position) == this->all_struct_contain_to_draw.end()){
                     if(structure.contain.roof != nullptr)
                         this->sorted_elements_to_draw.push_back(structure.contain.roof);
                 }
