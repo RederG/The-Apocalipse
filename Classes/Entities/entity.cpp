@@ -430,6 +430,13 @@ namespace Entity{
         temporary_entity = nullptr;
     }
 
+    void set_all_nearest_interactive_objects(){
+        if(Entity::get_map() != nullptr){
+            for(auto entity : Entity::container)
+                entity->set_nearest_interactive_object_on(Entity::get_map(), 2.0f);
+        }
+    }
+
     void set_map_to(Map::Object* map){
         the_map = map;
     }

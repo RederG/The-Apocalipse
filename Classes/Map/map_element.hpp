@@ -3,6 +3,10 @@
 
     #include "../../main.hpp"
 
+    namespace InteractiveObjects{
+        class Object;
+    };
+
     namespace Map{
         class Object;
     };
@@ -51,6 +55,9 @@
                 // Sets the new position of the element on the map
                 void set_map_position_to(sf::Vector2f new_position);
 
+                // Sets the nearest interactive object of the element
+                void set_nearest_interactive_object_on(Map::Object* map, float minimal_distance);
+
                 // Updates the element
                 void virtual update();
 
@@ -59,6 +66,9 @@
 
                 // Gets the new position of the element on the window
                 sf::Vector2f get_window_position_on(Map::Object* map);
+
+                // Gets the nearest interactive object of the element
+                InteractiveObjects::Object* get_nearest_interactive_object();
 
                 // Gets the type of the element
                 Type get_element_type();
@@ -75,6 +85,7 @@
             protected:
                 sf::Vector2f map_position;
                 Type element_type;
+                InteractiveObjects::Object* nearest_object = nullptr;
         };
 
         class Environment : public Object{
@@ -161,11 +172,14 @@
             // Gets the environment element associated to the color
             WorldContent get_element_at(sf::Color color);
 
-            // Gets the color associated to the environment element
-            sf::Color get_color_of(WorldContent element);
-
             // gets the laternative version of an element
             WorldContent get_element_alternative(WorldContent element, char i);
+
+            // Gets the nearest MapElement of the given element
+            InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map, float minimal_distance);
+
+            // Gets the color associated to the environment element
+            sf::Color get_color_of(WorldContent element);
 
             // Sort all object by their positions
             void sort_by_positions(std::vector<Object*>& element_list);
@@ -186,5 +200,6 @@
     };
     
     #include "map_manager.hpp"
+    #include "../InteractiveObjects/interactive_object.hpp"
 
 #endif

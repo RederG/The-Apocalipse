@@ -3,6 +3,10 @@
 
     #include "interactive_object.hpp"
 
+    namespace InteractiveObjects{
+        class Object;
+    };
+
     namespace Wall{
         enum Type{
             simple, with_window, with_door, with_open_door, down_simple, down_with_door, down_with_open_door, down_with_window
