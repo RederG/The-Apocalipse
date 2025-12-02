@@ -322,6 +322,7 @@ namespace GameWindow{
             }
 
         }
+        
         Entity::update_all();
                 
         if(Map::get(Map::NAME) != nullptr)
