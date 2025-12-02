@@ -127,7 +127,7 @@
                 sf::Clock* get_hurting_time_clock();
 
                 // Gets the movement state of the entity
-                bool get_movement();
+                bool is_moving();
 
                 // Gets the sprite of the entity
                 sf::Sprite virtual get_sprite(Map::Object* map, sf::Color color = sf::Color::White) override;

@@ -63,7 +63,7 @@ namespace Entity{
         return clock;
     }
 
-    bool Object::get_movement(){
+    bool Object::is_moving(){
         return this->moving;
     }
 
