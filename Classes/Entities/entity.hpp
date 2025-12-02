@@ -284,6 +284,9 @@
         // Reset / removes the temporary entity
         void reset_temporary_entity();
 
+        // Sets the nearest interactive objects of each entity
+        void set_all_nearest_interactive_objects();
+
         // Sets the map for all entities
         void set_map_to(Map::Object* map);
 

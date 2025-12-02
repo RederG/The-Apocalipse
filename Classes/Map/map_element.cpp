@@ -1,5 +1,6 @@
 #include "map_element.hpp"
 #include "../../Help/the_apocalipse.hpp"
+#include "Structures/structure_manager.hpp"
 
 namespace MapElement{
     
@@ -56,6 +57,10 @@ namespace MapElement{
         return this->element_type;
     }
 
+    InteractiveObjects::Object* Object::get_nearest_interactive_object(){
+        return this->nearest_object;
+    }
+
     sf::Sprite Object::get_sprite(Map::Object* map, sf::Color color){
         return *new sf::Sprite(*new sf::Texture());
     }
@@ -92,42 +97,13 @@ namespace MapElement{
         this->set_map_position_to(sf::Vector2f(x, y));
     }
 
+    void Object::set_nearest_interactive_object_on(Map::Object* map){
+        this->nearest_object = Help::get_nearest_interactive_object_of(this, map);
+    }
+
     void Object::update(){}
 
     namespace Help{
-
-        sf::Color get_color_of(WorldContent element){
-            sf::Color color;
-            switch (element){
-                case walls:
-                    color = sf::Color::Black;
-                    break;
-
-                case soil_herb_1:
-                    color = sf::Color::Blue;
-                    break;
-
-                case soil_rocks_1:
-                    color = sf::Color::White;
-                    break;
-
-                case nothing:
-                    color = sf::Color(0,0,0,0);
-                    break;
-
-                case border_map:
-                    color = sf::Color::Red;
-                    break;
-
-                case spawn_zombie_1:
-                    color = sf::Color::Green;
-                    break;
-                
-                default:
-                    break;
-            }
-            return color;
-        }
 
         WorldContent get_element_at(sf::Color color){
             WorldContent element;
@@ -189,6 +165,68 @@ namespace MapElement{
                     break;
             }
             return final_element;
+        }
+
+        InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map){
+            sf::Vector2i element_area = map->get_area_position(element->get_map_position().x, element->get_map_position().y);
+            std::map<float, InteractiveObjects::Object*> all_elements_around;
+            std::vector<float> all_distances;
+            for(int y = element_area.y - 1; y <= element_area.y + 1; y++){
+                for(int x = element_area.x - 1; x <= element_area.x + 1; x++){
+                    if(StructureManager::is_structure({x, y})){
+                        Structure::Instance& structure = StructureManager::get_structure(sf::Vector2i({x, y}));
+                        for(int i = 0; i < structure.contain.walls.size(); i++){
+                            InteractiveObjects::Object* wall = structure.contain.walls[i];
+                            if(wall->get_interaction_type() != InteractiveObjects::Type::nothing){
+                                sf::Vector2f distance = wall->get_map_position();
+                                distance.x -= element->get_map_position().x;
+                                distance.y -= element->get_map_position().y;
+
+                                float real_distance = sqrt(distance.x*distance.x + distance.y*distance.y);
+                                all_elements_around[real_distance] = wall;
+                                all_distances.push_back(real_distance);
+                            }
+                        }
+                    }
+                }
+            }
+            std::sort(all_distances.begin(), all_distances.end(), std::less());
+            if(!all_elements_around.empty())
+                return all_elements_around[all_distances[0]];
+            return nullptr;
+        }
+
+        sf::Color get_color_of(WorldContent element){
+            sf::Color color;
+            switch (element){
+                case walls:
+                    color = sf::Color::Black;
+                    break;
+
+                case soil_herb_1:
+                    color = sf::Color::Blue;
+                    break;
+
+                case soil_rocks_1:
+                    color = sf::Color::White;
+                    break;
+
+                case nothing:
+                    color = sf::Color(0,0,0,0);
+                    break;
+
+                case border_map:
+                    color = sf::Color::Red;
+                    break;
+
+                case spawn_zombie_1:
+                    color = sf::Color::Green;
+                    break;
+                
+                default:
+                    break;
+            }
+            return color;
         }
 
         void sort_by_positions(std::vector<Object*>& element_list){

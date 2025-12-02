@@ -262,6 +262,7 @@ namespace GameWindow{
                     }
 
                     Bullet::verify_collision();
+                    Entity::set_all_nearest_interactive_objects();
                 }
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::game_thread) == ThreadManager::State::Paused && !paused){
