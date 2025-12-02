@@ -326,6 +326,7 @@ namespace GameWindow{
                 
         if(Map::get(Map::NAME) != nullptr)
             Map::get(Map::NAME)->update();
+            
         if(Entity::verify_entity() == true)
             zombie_killed += 1;
         Gun::verify_guns_usability();
