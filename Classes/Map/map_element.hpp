@@ -56,7 +56,7 @@
                 void set_map_position_to(sf::Vector2f new_position);
 
                 // Sets the nearest interactive object of the element
-                void set_nearest_interactive_object_on(Map::Object* map);
+                void set_nearest_interactive_object_on(Map::Object* map, float minimal_distance);
 
                 // Updates the element
                 void virtual update();
@@ -176,7 +176,7 @@
             WorldContent get_element_alternative(WorldContent element, char i);
 
             // Gets the nearest MapElement of the given element
-            InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map);
+            InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map, float minimal_distance);
 
             // Gets the color associated to the environment element
             sf::Color get_color_of(WorldContent element);

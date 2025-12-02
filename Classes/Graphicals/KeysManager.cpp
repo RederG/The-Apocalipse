@@ -62,19 +62,19 @@ namespace KeysManager{
             && state == Player::State::Playing) || action == pause)
             return true;
         else if((action == move_right || action == move_left) && (state == Player::State::Look_at_Inventory
-            || state == Player::State::Look_at_another_Inventory))
+            || state == Player::State::Interacting_with_objects))
             return true;
         else if(action == open_inventory
-                && (state == Player::State::Playing || state == Player::State::Look_at_another_Inventory))
+                && (state == Player::State::Playing || state == Player::State::Interacting_with_objects))
             return true;
         else if(action == close_inventory 
-                && (state == Player::State::Look_at_Inventory || state == Player::State::Look_at_another_Inventory))
+                && (state == Player::State::Look_at_Inventory || state == Player::State::Interacting_with_objects))
             return true;
         else if((action == remove_item || action == Action::take_item) 
-                && (state == Player::State::Look_at_Inventory || state == Player::State::Look_at_another_Inventory)
+                && (state == Player::State::Look_at_Inventory || state == Player::State::Interacting_with_objects)
                 && player->get_inventory()->get_current_item() != nullptr)
             return true;
-        else if(action == interaction && (player->get_nearest_tomb(min_distance) != nullptr))
+        else if(action == interaction && (player->get_nearest_interactive_object() != nullptr))
             return true;
         else
             return false;

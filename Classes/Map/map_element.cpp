@@ -97,8 +97,8 @@ namespace MapElement{
         this->set_map_position_to(sf::Vector2f(x, y));
     }
 
-    void Object::set_nearest_interactive_object_on(Map::Object* map){
-        this->nearest_object = Help::get_nearest_interactive_object_of(this, map);
+    void Object::set_nearest_interactive_object_on(Map::Object* map, float minimal_distance){
+        this->nearest_object = Help::get_nearest_interactive_object_of(this, map, minimal_distance);
     }
 
     void Object::update(){}
@@ -167,7 +167,7 @@ namespace MapElement{
             return final_element;
         }
 
-        InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map){
+        InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map, float minimal_distance){
             sf::Vector2i element_area = map->get_area_position(element->get_map_position().x, element->get_map_position().y);
             std::map<float, InteractiveObjects::Object*> all_elements_around;
             std::vector<float> all_distances;
@@ -191,8 +191,11 @@ namespace MapElement{
                 }
             }
             std::sort(all_distances.begin(), all_distances.end(), std::less());
-            if(!all_elements_around.empty())
-                return all_elements_around[all_distances[0]];
+            if(!all_elements_around.empty()){
+                float nearest_distance = all_distances[0];
+                if(nearest_distance <= minimal_distance)
+                    return all_elements_around[nearest_distance];
+            }
             return nullptr;
         }
 
