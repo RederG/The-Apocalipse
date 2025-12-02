@@ -29,7 +29,6 @@ namespace GameWindow{
 
     bool first_zombies = false;
     bool show_keys = true;
-    bool entity_updated = false;
     
     sf::Clock fps_clock;
     float fps;
