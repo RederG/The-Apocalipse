@@ -262,6 +262,21 @@ namespace GameWindow{
                     }
 
                     Bullet::verify_collision();
+                    
+        Gun::verify_guns_usability();
+        Gun::verify_all_fire_mode_clocks();
+        Bullet::verify_bullets_lives();
+
+        Bullet::move_all(fps);
+
+        const int MAX_ZOMBIES = 5;
+
+        if(Tomb::verify_all_life_time() == true)
+            Zombie::create_multiple(1, Map::get(Map::NAME));
+        if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
+            Zombie::create_multiple(1, Map::get(Map::NAME));
+        if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
+            first_zombies = false;
                 }
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::game_thread) == ThreadManager::State::Paused && !paused){
@@ -329,20 +344,6 @@ namespace GameWindow{
         
         if(Entity::verify_entity() == true)
             zombie_killed += 1;
-        Gun::verify_guns_usability();
-        Gun::verify_all_fire_mode_clocks();
-        Bullet::verify_bullets_lives();
-
-        Bullet::move_all(fps);
-
-        const int MAX_ZOMBIES = 5;
-
-        if(Tomb::verify_all_life_time() == true)
-            Zombie::create_multiple(1, Map::get(Map::NAME));
-        if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
-            Zombie::create_multiple(1, Map::get(Map::NAME));
-        if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
-            first_zombies = false;
     }
 
     void Render(){
