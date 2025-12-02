@@ -14,8 +14,8 @@
             Playing,
             // When he is looking on his inventory
             Look_at_Inventory,
-            // When he is looking on another inventory
-            Look_at_another_Inventory
+            // When he is interacting with another object
+            Interacting_with_objects
         };
         
         // A player Object

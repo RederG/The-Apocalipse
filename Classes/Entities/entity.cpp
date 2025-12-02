@@ -63,7 +63,7 @@ namespace Entity{
         return clock;
     }
 
-    bool Object::get_movement(){
+    bool Object::is_moving(){
         return this->moving;
     }
 
@@ -428,6 +428,13 @@ namespace Entity{
 
     void reset_temporary_entity(){
         temporary_entity = nullptr;
+    }
+
+    void set_all_nearest_interactive_objects(){
+        if(Entity::get_map() != nullptr){
+            for(auto entity : Entity::container)
+                entity->set_nearest_interactive_object_on(Entity::get_map(), 2.0f);
+        }
     }
 
     void set_map_to(Map::Object* map){

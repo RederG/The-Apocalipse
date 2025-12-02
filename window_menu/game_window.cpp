@@ -95,7 +95,7 @@ namespace GameWindow{
                 if(player->get_state() == Player::State::Look_at_Inventory)
                     Viewer::draw_container(player->get_inventory(), &*player, Map::get(Map::NAME), true);
                 Tomb::Object* tomb = player->get_nearest_tomb(DISTANCE_MIN);
-                if(player->get_state() == Player::State::Look_at_another_Inventory && tomb != nullptr)
+                if(player->get_state() == Player::State::Interacting_with_objects && tomb != nullptr)
                     Viewer::draw_container(tomb->get_inventory(), &*tomb, Map::get(Map::NAME), true);
 
                 Viewer::draw_effect(player->get_effect_manager(), 4);
@@ -171,13 +171,12 @@ namespace GameWindow{
                 if(KeysManager::try_to(KeysManager::Action::interaction, key->control, key->alt, key->shift)){
                     for(auto player : Player::container){
                         if(player->Player::Object::get_state() == Player::State::Playing){
-                            if(player->get_nearest_tomb(DISTANCE_MIN) != nullptr){
-                                Player::set_state(Player::State::Look_at_another_Inventory);
-                                Debugging::write("Looking zombie's inventory...", Debugging::get_state_of(Debugging::In_game));
+                            if(player->get_nearest_interactive_object() != nullptr){
+                                
                             }
                             break;
                         }
-                        if(player->Player::Object::get_state() == Player::State::Look_at_another_Inventory){
+                        if(player->Player::Object::get_state() == Player::State::Interacting_with_objects){
                             Player::set_state(Player::State::Playing);
                             break;
                         }
@@ -197,7 +196,7 @@ namespace GameWindow{
 
                 if(KeysManager::try_to(KeysManager::Action::take_item, key->control, key->alt, key->shift)){
                     for(auto player : Player::container){
-                        if(player->get_state() == Player::State::Look_at_another_Inventory){
+                        if(player->get_state() == Player::State::Interacting_with_objects){
                             if(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->get_current_item() != nullptr
                                 && player->get_inventory()->is_full() == false){
 
@@ -227,7 +226,7 @@ namespace GameWindow{
                             player->get_inventory()->move_selector_to(Container::Direction::Left);
                     }
 
-                    if (player->get_state() == Player::State::Look_at_another_Inventory){
+                    if (player->get_state() == Player::State::Interacting_with_objects){
                         if(player->get_nearest_tomb(DISTANCE_MIN) != nullptr){
                             if(KeysManager::try_to(KeysManager::Action::move_right))
                                 player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->move_selector_to(Container::Direction::Right);
@@ -261,23 +260,8 @@ namespace GameWindow{
                         Main::first_drawing(true);
                     }
 
-                    if(Entity::verify_entity() == true)
-                        zombie_killed += 1;
-                    Gun::verify_guns_usability();
-                    Gun::verify_all_fire_mode_clocks();
-                    Bullet::verify_bullets_lives();
-
-                    Bullet::move_all(fps);
                     Bullet::verify_collision();
-
-                    const int MAX_ZOMBIES = 5;
-
-                    if(Tomb::verify_all_life_time() == true)
-                        Zombie::create_multiple(1, Map::get(Map::NAME));
-                    if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
-                        Zombie::create_multiple(1, Map::get(Map::NAME));
-                    if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
-                        first_zombies = false;
+                    Entity::set_all_nearest_interactive_objects();
                 }
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::game_thread) == ThreadManager::State::Paused && !paused){
@@ -319,7 +303,7 @@ namespace GameWindow{
                 else Viewer::Items::change_to(nullptr);
             }
             
-            else if(player->Player::Object::get_state() == Player::State::Look_at_another_Inventory){
+            else if(player->Player::Object::get_state() == Player::State::Interacting_with_objects){
                 if(player->get_nearest_tomb(DISTANCE_MIN) != nullptr){
                     Viewer::draw_container(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory(), player->get_nearest_tomb(DISTANCE_MIN), Entity::get_map(), true);
                     if(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->get_current_item()!= nullptr)
@@ -342,6 +326,23 @@ namespace GameWindow{
                 
         if(Map::get(Map::NAME) != nullptr)
             Map::get(Map::NAME)->update();
+
+        if(Entity::verify_entity() == true)
+            zombie_killed += 1;
+        Gun::verify_guns_usability();
+        Gun::verify_all_fire_mode_clocks();
+        Bullet::verify_bullets_lives();
+
+        Bullet::move_all(fps);
+
+        const int MAX_ZOMBIES = 5;
+
+        if(Tomb::verify_all_life_time() == true)
+            Zombie::create_multiple(1, Map::get(Map::NAME));
+        if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
+            Zombie::create_multiple(1, Map::get(Map::NAME));
+        if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
+            first_zombies = false;
     }
 
     void Render(){

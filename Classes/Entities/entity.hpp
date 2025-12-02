@@ -127,7 +127,7 @@
                 sf::Clock* get_hurting_time_clock();
 
                 // Gets the movement state of the entity
-                bool get_movement();
+                bool is_moving();
 
                 // Gets the sprite of the entity
                 sf::Sprite virtual get_sprite(Map::Object* map, sf::Color color = sf::Color::White) override;
@@ -283,6 +283,9 @@
 
         // Reset / removes the temporary entity
         void reset_temporary_entity();
+
+        // Sets the nearest interactive objects of each entity
+        void set_all_nearest_interactive_objects();
 
         // Sets the map for all entities
         void set_map_to(Map::Object* map);
