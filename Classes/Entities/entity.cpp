@@ -433,7 +433,7 @@ namespace Entity{
     void set_all_nearest_interactive_objects(){
         if(Entity::get_map() != nullptr){
             for(auto entity : Entity::container)
-                entity->set_nearest_interactive_object_on(Entity::get_map(), 2.0f);
+                entity->set_nearest_interactive_object_on(Entity::get_map(), 1.0f);
         }
     }
 
