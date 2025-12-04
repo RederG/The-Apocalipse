@@ -145,6 +145,7 @@ namespace Map{
                         environment->set_zombie_path_to(false);
                         environment->set_path_finding_to(false);
                     }
+                    delete environment;
                 }
             }
         }

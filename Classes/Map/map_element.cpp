@@ -9,7 +9,7 @@ namespace MapElement{
         this->element_type = Type::World;
     }
 
-    sf::Vector2f Object::get_map_position(){
+    sf::Vector2f Object::get_map_position(bool virtual_position){
         return this->map_position;
     }
 
@@ -176,14 +176,13 @@ namespace MapElement{
                     if(StructureManager::is_structure({x, y})){
                         Structure::Instance& structure = StructureManager::get_structure(sf::Vector2i({x, y}));
                         for(int i = 0; i < structure.contain.walls.size(); i++){
-                            InteractiveObjects::Object* wall = structure.contain.walls[i];
-                            if(wall->get_interaction_type() != InteractiveObjects::Type::nothing){
-                                sf::Vector2f distance = wall->get_map_position();
-                                distance.x -= element->get_map_position().x;
-                                distance.y -= element->get_map_position().y;
+                            if(structure.contain.walls[i]->get_interaction_type() != InteractiveObjects::Type::nothing){
+                                sf::Vector2f distance = structure.contain.walls[i]->get_map_position();
+                                distance.x -= int(element->get_map_position().x);
+                                distance.y -= int(element->get_map_position().y);
 
                                 float real_distance = sqrt(distance.x*distance.x + distance.y*distance.y);
-                                all_elements_around[real_distance] = wall;
+                                all_elements_around[real_distance] = structure.contain.walls[i];
                                 all_distances.push_back(real_distance);
                             }
                         }
@@ -238,7 +237,7 @@ namespace MapElement{
                     int corrrect_position = 0;
                     Object* obj = element_list[j];
                     for(int k = 0; k < element_list.size() && TheApocalipse::is_running(); k++){
-                        if(obj->get_map_position().y >= element_list[k]->get_map_position().y)
+                        if(obj->get_map_position(true).y >= element_list[k]->get_map_position(true).y)
                             corrrect_position = k;
                     }
                     element_list.erase(element_list.begin() + j);

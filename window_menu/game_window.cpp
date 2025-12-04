@@ -250,7 +250,7 @@ namespace GameWindow{
                 if(paused)
                     Debugging::write("(Game updater) - THREAD CONTINUED");
                 paused = false;
-                if(Main::context() == Main::Context::TheGame && TheApocalipse::is_running()){
+                if(Main::context() == Main::Context::TheGame && TheApocalipse::is_running() && Map::get(Map::NAME) != nullptr){
                     Map::get(Map::NAME)->set_elements_drawing_order();
                     
                     if(Player::container.empty() == true){
@@ -259,9 +259,11 @@ namespace GameWindow{
                         ThreadManager::pause_all();
                         Main::first_drawing(true);
                     }
-
-                    Bullet::verify_collision();
-                    Entity::set_all_nearest_interactive_objects();
+                    
+                    if(TheApocalipse::is_running())
+                        Bullet::verify_collision();
+                    if(TheApocalipse::is_running())
+                        Entity::set_all_nearest_interactive_objects();
                 }
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::game_thread) == ThreadManager::State::Paused && !paused){

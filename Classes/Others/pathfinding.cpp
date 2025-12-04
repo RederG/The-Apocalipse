@@ -281,7 +281,6 @@ namespace PathFinding{
             if(end_position_found)
                 this->create_path();
         }
-        this->show_path();
     }
 
     void A_star::search(){
@@ -303,9 +302,6 @@ namespace PathFinding{
                     this->all_points_to_check[value] = adjacent_point;
                     this->all_points[adj_point_area][adjacent_point] = false;
                     this->parent_points[adjacent_point] = point_to_check;
-                    MapElement::Environment* element = this->map_target->get_environment_at(Main::get_vector2i_of(adjacent_point));
-                    if(element != nullptr)
-                        element->set_path_finding_to(true);
                 }
             }
         }
@@ -333,16 +329,6 @@ namespace PathFinding{
                 for(int i = 0; i < old_path.size(); i++)
                     this->path.push_back(old_path[i]);
                 building_path = true;
-            }
-        }
-    }
-
-    void A_star::show_path(){
-        if(this->path.size() > 0 && this->map_target != nullptr){
-            for(auto point : this->path){
-                MapElement::Environment* environment = this->map_target->get_environment_at(Main::get_vector2f_of(point));
-                if(environment != nullptr)
-                    environment->set_zombie_path_to(true);
             }
         }
     }
