@@ -61,7 +61,7 @@
                 // Updates the element
                 void virtual update();
 
-                // Gets the new position of the element on the map
+                // Gets the position of the element on the map
                 sf::Vector2f virtual get_map_position(bool virtual_position = false);
 
                 // Gets the new position of the element on the window
