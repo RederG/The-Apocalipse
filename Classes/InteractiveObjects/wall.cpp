@@ -33,9 +33,15 @@ namespace Wall{
         wall_sprite.setTextureRect(textures.at(this->wall_type));
         wall_sprite.setScale(map->get_scale());
         wall_sprite.setColor(color);
-        wall_sprite.setOrigin({0, 48});
+        wall_sprite.setOrigin({0, 16});
         wall_sprite.setPosition(this->get_window_position_on(map));
         return wall_sprite;
+    }
+
+    sf::Vector2f Object::get_map_position(bool virtual_position){
+        if(virtual_position)
+            return {this->map_position.x, this->map_position.y + 1};
+        return this->map_position;
     }
 
     sf::RectangleShape Object::get_collision_rect(Map::Object* map, sf::Color color){
@@ -48,9 +54,12 @@ namespace Wall{
         else
             size.y /= 8;
 
+        sf::Vector2f position = obj_sprite.getPosition();
+        position.y += 32*map->get_scale().y;
+
         rect.setSize(size);
         rect.setOrigin({0, size.y});
-        rect.setPosition(obj_sprite.getPosition());
+        rect.setPosition(position);
 
         if(this->wall_type != down_with_open_door || this->wall_type != with_open_door)
             return rect;
