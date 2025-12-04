@@ -9,7 +9,7 @@ namespace MapElement{
         this->element_type = Type::World;
     }
 
-    sf::Vector2f Object::get_map_position(){
+    sf::Vector2f Object::get_map_position(bool virtual_position){
         return this->map_position;
     }
 
@@ -238,7 +238,7 @@ namespace MapElement{
                     int corrrect_position = 0;
                     Object* obj = element_list[j];
                     for(int k = 0; k < element_list.size() && TheApocalipse::is_running(); k++){
-                        if(obj->get_map_position().y >= element_list[k]->get_map_position().y)
+                        if(obj->get_map_position(true).y >= element_list[k]->get_map_position(true).y)
                             corrrect_position = k;
                     }
                     element_list.erase(element_list.begin() + j);

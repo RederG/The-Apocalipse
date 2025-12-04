@@ -38,6 +38,12 @@ namespace Wall{
         return wall_sprite;
     }
 
+    sf::Vector2f Object::get_map_position(bool virtual_position){
+        if(virtual_position)
+            return {this->map_position.x, this->map_position.y + 1};
+        return this->map_position;
+    }
+
     sf::RectangleShape Object::get_collision_rect(Map::Object* map, sf::Color color){
         sf::RectangleShape rect;
         sf::Sprite obj_sprite = this->get_sprite(map, color);
