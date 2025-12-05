@@ -587,4 +587,18 @@ namespace StructureManager{
         actived = false;
     }
 
+    void reset(){
+        all_points.clear();
+        all_visited_point.clear();
+        all_spawn_points.clear();
+        all_new_structures.clear();
+        all_new_structures_position.clear();
+        all_structures.clear();
+        all_structures_position.clear();
+        parent_points_position.clear();
+        Counter::new_struct = 0;
+        Counter::point = 0;
+        Counter::struct_to_be_valid = 0;
+    }
+
 };

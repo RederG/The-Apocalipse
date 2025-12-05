@@ -91,7 +91,7 @@
                 Container::Object* inventory = nullptr;
         };
 
-        extern std::vector< std::shared_ptr<Object> > container;
+        extern std::vector<Object*> container;
 
         // Sets the tomb of an entity (if the entity dies)
         void set_tomb_of(Entity::Object &entity);

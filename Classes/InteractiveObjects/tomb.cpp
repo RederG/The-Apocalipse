@@ -2,7 +2,7 @@
 #include "../Entities/entity.hpp"
 
 namespace Tomb{
-    std::vector< std::shared_ptr<Object> > container;
+    std::vector<Object*> container;
 
     Object::Object(){
         owner.name = "none";
@@ -161,7 +161,7 @@ namespace Tomb{
     }
 
     void set_tomb_of(Entity::Object &entity){
-        std::shared_ptr<Object> tomb = std::make_shared<Object>(*new Object());
+        Object* tomb = new Object();
         tomb->set_name_to(entity.get_name() + "_tomb");
         tomb->set_owner_name_to(entity.get_name());
         tomb->set_owner_id_to(entity.get_id());
@@ -205,7 +205,7 @@ namespace Tomb{
             Main::get_files_in(tombs_files_path + "/", all_tombs);
 
             for(std::string tomb_file : all_tombs){
-                std::shared_ptr<Tomb::Object> tomb = std::make_shared<Tomb::Object>(*new Tomb::Object());
+                Tomb::Object* tomb = new Tomb::Object();
                 container.push_back(tomb);
                 tomb->load_from(tombs_files_path + "/" + tomb_file);
                 tomb->get_inventory()->load_from(inventories_path + "/" + tomb->get_id() + ".inventory", items_path);

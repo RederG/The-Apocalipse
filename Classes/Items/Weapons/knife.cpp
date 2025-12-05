@@ -42,16 +42,16 @@ void Knife::use_item(Entity::Object &entity, bool special_use){
 
             if((entity.get_name() != entity_ptr->get_name() || entity.get_id() != entity_ptr->get_id()) && distance <= DISTANCE_MIN){
                 if(entity_direction == Entity::Direction::up && entity_ptr_position.y){
-                    this->cut(entity_ptr.get());
+                    this->cut(entity_ptr);
                 }
                 if(entity_direction == Entity::Direction::down && entity_ptr_position.y){
-                    this->cut(entity_ptr.get());
+                    this->cut(entity_ptr);
                 }
                 if(entity_direction == Entity::Direction::right && entity_ptr_position.x){
-                    this->cut(entity_ptr.get());
+                    this->cut(entity_ptr);
                 }
                 if(entity_direction == Entity::Direction::left && entity_ptr_position.x){
-                    this->cut(entity_ptr.get());
+                    this->cut(entity_ptr);
                 }
             }
         }

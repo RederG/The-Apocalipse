@@ -5,7 +5,7 @@
 #include "../../window_menu/game_window.hpp"
 
 namespace Entity{
-    std::list< std::shared_ptr<Entity::Object> > container;
+    std::list<Entity::Object*> container;
     Object* temporary_entity = nullptr;
     Map::Object* the_map = nullptr;
 
@@ -378,19 +378,13 @@ namespace Entity{
 
     void terminates(){
         Debugging::write("Removing all entities", Debugging::get_state_of(Debugging::In_game));
-        for(auto& player : Player::container){
-            player.reset();
-        }
         Player::container.clear();
-        for(auto& zombie : Zombie::container){
-            zombie.reset();
-        }
         Zombie::container.clear();
-        for(auto entity : Entity::container){
-            entity->destroy();
-            entity.reset();
+        while(!Entity::container.empty()){
+            Entity::container.front()->destroy();
+            delete Entity::container.front();
+            Entity::container.erase(Entity::container.begin());
         }
-        Entity::container.clear();
         the_map = nullptr;
         Debugging::write("Removing all entities terminated", Debugging::get_state_of(Debugging::In_game));
     }
@@ -506,13 +500,13 @@ namespace Entity{
                     file.read(&name[0], sizeof(char)*name_size);
 
                     if(name == "zombie"){
-                        std::shared_ptr<Zombie::Object> zombie = std::make_shared<Zombie::Object>(*new Zombie::Object());
+                        Zombie::Object* zombie = new Zombie::Object();
                         Entity::container.push_back(zombie);
                         Zombie::container.push_back(zombie);
                         zombie->load_from(entity_file_path);
                     }
                     else{
-                        std::shared_ptr<Player::Object> player = std::make_shared<Player::Object>(*new Player::Object(""));
+                        Player::Object* player = new Player::Object("");
                         Entity::container.push_back(player);
                         Player::container.push_back(player);
                         player->load_from(entity_file_path);

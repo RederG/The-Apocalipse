@@ -47,6 +47,8 @@
 
         void search_structures();
 
+        void reset();
+
         void set_all_points_to(std::vector<std::pair<int, int>> all_points);
     };
 

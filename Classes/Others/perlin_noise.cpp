@@ -3,7 +3,7 @@
 
 namespace PerlinNoise{
 
-    std::list<std::shared_ptr<Object>> all_noises;
+    std::list<Object*> all_noises;
 
     bool exists(std::string name){
         bool existance = false;
@@ -429,15 +429,14 @@ namespace PerlinNoise{
     }
 
     void Object::destroy(){
+        delete this->pixels;
         this->pixels = nullptr;
         this->pixels_color.clear();
     }
 
     void new_noise(std::string noise_name, float frequence, float amplitude, int octave, long long seed, int cell_size, sf::Vector2i grid_max_size){
-        if(exists(noise_name) == false){
-            std::shared_ptr<Object> noise = std::make_shared<Object>(*new Object(noise_name, frequence, amplitude, octave, seed, cell_size, grid_max_size));
-            all_noises.push_back(noise);
-        }
+        if(exists(noise_name) == false)
+            all_noises.push_back(new Object(noise_name, frequence, amplitude, octave, seed, cell_size, grid_max_size));
     }
 
     Object* get(std::string name){
@@ -452,7 +451,7 @@ namespace PerlinNoise{
     }
 
     void add(Object* new_noise){
-        all_noises.push_back(std::make_shared<Object>(*new_noise));
+        all_noises.push_back(new_noise);
     }
 
     void init(){
@@ -461,9 +460,8 @@ namespace PerlinNoise{
             for(auto noise : all_noises){
                 if(noise != nullptr){
                     noise->destroy();
-                    delete noise.get();
+                    delete noise;
                 }
-                noise.reset();
             }
         }
         all_noises.clear();
@@ -474,7 +472,7 @@ namespace PerlinNoise{
         for(auto noise : all_noises){
             if(noise->get_name() == name){
                 noise->destroy();
-                noise.reset();
+                delete noise;
                 all_noises.remove(noise);
                 break;
             }
@@ -484,7 +482,7 @@ namespace PerlinNoise{
     void clear(){
         for(auto& noise : all_noises){
             noise->destroy();
-            noise.reset();
+            delete noise;
         }
         all_noises.clear();
     }

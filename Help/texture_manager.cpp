@@ -106,10 +106,12 @@ namespace AllTextures{
 
     void destroy(){
         Debugging::write("Destroying all textures", Debugging::get_state_of(Debugging::In_game));
-        for(auto struct_texture : all_structures_texture)
+        for(auto& struct_texture : all_structures_texture){
+            delete struct_texture.second;
             struct_texture.second = nullptr;
+        }
         all_structures_texture.clear();
-        for(std::pair<std::string, sf::Texture*> texture_ptr : all_textures){
+        for(auto& texture_ptr : all_textures){
             delete texture_ptr.second;
             texture_ptr.second = nullptr;
         }

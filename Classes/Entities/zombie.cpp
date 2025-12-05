@@ -4,7 +4,7 @@
 #define PI 3.14
 
 namespace Zombie{
-    std::list< std::shared_ptr<Zombie::Object> > container;
+    std::list<Zombie::Object*> container;
 
     bool searching = false;
     bool algo_paused = false;
@@ -340,9 +340,9 @@ namespace Zombie{
 
     void create_multiple(unsigned int number_of_zombies, Map::Object* map){
         for (int i = 0; i < number_of_zombies; i++){
-            std::shared_ptr<Object> zombie = std::make_shared<Object>(*new Object());
-            container.push_back( zombie );
-            Entity::container.push_back( zombie );
+            Object* zombie = new Object();
+            container.push_back(zombie);
+            Entity::container.push_back(zombie);
             zombie->fill_inventory();
             zombie->random_pos(map);
         }

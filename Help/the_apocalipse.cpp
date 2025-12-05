@@ -25,12 +25,13 @@ namespace TheApocalipse{
         ThreadManager::pause_all();
         Entity::terminates();
         for(auto& tomb : Tomb::container)
-            tomb.reset();
+            delete tomb;
         Tomb::container.clear();
         AllTextures::destroy();
         Probability::terminate();
         Map::clear();
         PerlinNoise::clear();
+        StructureManager::reset();
     }
 
     bool is_running(){

@@ -50,7 +50,7 @@
         };
         
         //This list contains every Zombies on the map
-        extern std::list< std::shared_ptr<Object> > container;
+        extern std::list<Object*> container;
 
         /*
         This function creates multiple zombies.

@@ -173,9 +173,9 @@ namespace MapElement{
             std::vector<float> all_distances;
             for(int y = element_area.y - 1; y <= element_area.y + 1; y++){
                 for(int x = element_area.x - 1; x <= element_area.x + 1; x++){
-                    if(StructureManager::is_structure({x, y})){
+                    if(StructureManager::is_structure({x, y}) && StructureManager::search_finished()){
                         Structure::Instance& structure = StructureManager::get_structure(sf::Vector2i({x, y}));
-                        for(int i = 0; i < structure.contain.walls.size(); i++){
+                        for(int i = 0; i < structure.contain.walls.size() && StructureManager::search_finished(); i++){
                             if(structure.contain.walls[i]->get_interaction_type() != InteractiveObjects::Type::nothing){
                                 sf::Vector2f distance = structure.contain.walls[i]->get_map_position();
                                 distance.x -= int(element->get_map_position().x);
