@@ -536,6 +536,8 @@ namespace Map{
     }
 
     void Object::clear(){
+        this->elements_to_draw.clear();
+        this->sorted_elements_to_draw.clear();
         for(auto& working_area : this->all_working_areas)
             working_area = nullptr;
         this->all_working_areas.clear();
@@ -544,6 +546,8 @@ namespace Map{
             delete area_group;
         }
         this->all_areas_group.clear();
+        this->all_struct_contain_to_draw.clear();
+        this->all_struct_roof_to_draw.clear();
     }
 
     void Object::save_to(std::string save_file_location){
@@ -712,8 +716,6 @@ namespace Map{
                 map.second->clear();
                 delete map.second;
             }
-            while(!all_maps.empty())
-                all_maps.erase(all_maps.begin());
         }
         all_maps.clear();
         Debugging::write("Clearing map terminated");

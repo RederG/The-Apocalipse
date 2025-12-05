@@ -34,6 +34,9 @@ namespace GameWindow{
     float fps;
     sf::Clock FPS_update;
 
+    sf::Clock time_update;
+    bool time_updating = false;
+
     sf::Font font;
 
     sf::Vector2f player_position;
@@ -354,6 +357,11 @@ namespace GameWindow{
     }
 
     void Event(){
+        if(Main::clock_seconds(1, time_update) == Main::GameTimer::Reached)
+            time_updating = true;
+        else
+            time_updating = false;
+
         // The font for the texts
         sf::Font font = *FontManager::get_font(FontManager::Fonts::Arial);
 
@@ -474,13 +482,21 @@ namespace GameWindow{
             
             Main::first_drawing(false);
         }
-
+        sf::Clock clock;
         Input();
+        if(time_updating)
+            Debugging::write("Input time : " + std::to_string(clock.getElapsedTime().asSeconds()));
         
         if(!Main::window()->isOpen())
             return;
-            
-        Update();        
+        
+        clock.restart();
+        Update();
+        if(time_updating)
+            Debugging::write("Update time : " + std::to_string(clock.getElapsedTime().asSeconds()));  
+        clock.restart();
         Render();
+        if(time_updating)
+            Debugging::write("Render time : " + std::to_string(clock.getElapsedTime().asSeconds()) + "\n");
     }
 }
