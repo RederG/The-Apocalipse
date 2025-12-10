@@ -14,7 +14,7 @@ If you want to know, The Apocalipse is a game like "Shaterred Pixel Dungeon" but
 These functionalities are not implemented now, but I will do that earlier.
 I will develop it step by step and I want it to work. Then everyone can play on it(if the game is awesome also). I don't think that this game will be popular or something like that but I hope just.
 
-## SCRENNSHOTS
+## SCREENSHOTS
 
 ![The game gameplay preview](/res/images/Screenshots/game_preview.png "This is the gameplay")
 
