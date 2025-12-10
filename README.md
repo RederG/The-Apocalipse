@@ -5,13 +5,13 @@
 Hello everyone !
 
 I am RederG, the developper of "The Apocalipse" game. This is my first big project made with C++.
-I started programmation in 2023 in the Christmas vacation with Python. Then I started to learn C/C++, especially C++. 
+I started programmation in 2023 in the Christmas vacation with Python when I was 16 years old. Then I started to learn C/C++, especially C++. 
 This project was born in 21 July of 2024 and it still grow every day until now.
 
 I hope you will give feedback for this project and that can help me a lot during developpement.
 
 If you want to know, The Apocalipse is a game like "Shaterred Pixel Dungeon" but I want to add some functionalities like multiplayer system, hystory and "creative mode" (this is a kind of minecraft if you want).
-These functionalities are not implemented now, but I will do that earlier.
+These functionalities are not implemented now, but I will do that earlier(or maybe not, if I am lazy and I want to make other things instead of this game).
 I will develop it step by step and I want it to work. Then everyone can play on it(if the game is awesome also). I don't think that this game will be popular or something like that but I hope just.
 
 ## SCREENSHOTS
