@@ -169,34 +169,31 @@ namespace MapElement{
 
         InteractiveObjects::Object* get_nearest_interactive_object_of(MapElement::Object* element, Map::Object* map, float minimal_distance){
             sf::Vector2i element_area = map->get_area_position(element->get_map_position().x, element->get_map_position().y);
-            std::map<float, InteractiveObjects::Object*> all_elements_around;
-            std::vector<float> all_distances;
+            InteractiveObjects::Object* nearest_obj = nullptr;
+            float nearest_distance = minimal_distance;
+
             for(int y = element_area.y - 1; y <= element_area.y + 1; y++){
                 for(int x = element_area.x - 1; x <= element_area.x + 1; x++){
                     if(StructureManager::is_structure({x, y}) && StructureManager::search_finished()){
                         Structure::Instance& structure = StructureManager::get_structure(sf::Vector2i({x, y}));
-                        for(int i = 0; i < structure.contain.walls.size() && StructureManager::search_finished(); i++){
-                            InteractiveObjects::Object wall = *structure.contain.walls[i];
-                            if(wall.get_interaction_type() != InteractiveObjects::Type::nothing){
-                                sf::Vector2f distance = wall.get_map_position();
+                        for(int i = 0; i < structure.contain.walls.size() && StructureManager::search_finished() && structure.contains_walls; i++){
+                            InteractiveObjects::Object* wall = structure.contain.walls[i];
+                            if(wall->get_interaction_type() != InteractiveObjects::Type::nothing){
+                                sf::Vector2f distance = wall->get_map_position();
                                 distance.x -= int(element->get_map_position().x);
                                 distance.y -= int(element->get_map_position().y);
 
                                 float real_distance = sqrt(distance.x*distance.x + distance.y*distance.y);
-                                all_elements_around[real_distance] = &wall;
-                                all_distances.push_back(real_distance);
+                                if(real_distance <= nearest_distance){
+                                    nearest_distance = real_distance;
+                                    nearest_obj = wall;
+                                }
                             }
                         }
                     }
                 }
             }
-            std::sort(all_distances.begin(), all_distances.end(), std::less());
-            if(!all_elements_around.empty()){
-                float nearest_distance = all_distances[0];
-                if(nearest_distance <= minimal_distance)
-                    return all_elements_around[nearest_distance];
-            }
-            return nullptr;
+            return nearest_obj;
         }
 
         sf::Color get_color_of(WorldContent element){

@@ -128,6 +128,7 @@ namespace Entity{
 
         sf::Vector2f rect_size = entity_sprite.getGlobalBounds().size;
         rect_size.x /= 2;
+        rect_size.x -= 4*map->get_scale().x;
         rect_size.y /= 4; rect_size.y -= 2*map->get_scale().y;
         rect.setSize(rect_size);
 
