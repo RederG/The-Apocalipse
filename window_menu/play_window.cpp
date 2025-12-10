@@ -43,6 +43,8 @@ namespace PlayWindow{
 
     void get_players(){
         std::string players_list_path = "../Players";
+        if(!std::filesystem::exists(players_list_path))
+            std::filesystem::create_directory(players_list_path);
         players_list.clear();
         for (auto path : std::filesystem::directory_iterator(players_list_path)){
             std::string player_name = path.path().string();

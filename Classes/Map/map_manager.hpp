@@ -151,7 +151,7 @@
                 Area* add_area(Area* area);
 
                 // Gets all areas
-                std::vector<std::shared_ptr<Area>> get_all_areas();
+                std::vector<Area*> get_all_areas();
 
                 // Clears all areas
                 void clear();
@@ -163,7 +163,7 @@
                 bool is_mine(sf::Vector2f position);
 
             private:
-                std::vector<std::shared_ptr<Area>> all_areas; // All areas on the group of areas
+                std::vector<Area*> all_areas; // All areas on the group of areas
                 sf::Vector2i position; // The position of the group of area
                 sf::Vector2i area_group_size; // The size of the group of area
                 sf::Vector2i area_size; // The size of each area on the group
@@ -333,7 +333,7 @@
             private:
                 sf::RenderWindow* window_target; // The window that the map wiil use
                 PerlinNoise::Object* noise_target; // The noise that tha map will use
-                std::vector<std::shared_ptr<AreaGroup>> all_areas_group; // All groupement of areas
+                std::vector<AreaGroup*> all_areas_group; // All groupement of areas
                 std::vector<Area*> all_working_areas; // all areas that should be render
                 std::vector<Area*> all_render_areas; // all areas that should be render
                 sf::Vector2i old_player_area; // The area where the player is before

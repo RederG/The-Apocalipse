@@ -3,7 +3,7 @@
 
 namespace GamePauseWindow{
     // The 'background rectangle'
-    sf::RectangleShape bg_rect(sf::Vector2f(Main::window()->getSize()));
+    sf::RectangleShape bg_rect;
 
     // The continue button background (a rect)
     sf::RectangleShape Continue_rect;
@@ -132,6 +132,7 @@ namespace GamePauseWindow{
     }
 
     void Event(){
+        bg_rect.setSize(sf::Vector2f(Main::window()->getSize()));
         Main::window()->setFramerateLimit(60);
         
         // The path for the Arial's font

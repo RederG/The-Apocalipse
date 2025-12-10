@@ -20,6 +20,9 @@
 
                 // Tries to find the path
                 void find_path();
+                
+                // Verifies if the path finder found the path
+                bool found_path();
 
                 // Resets the path finder
                 void reset();
@@ -49,7 +52,6 @@
                 // Creates the path finding version of one map
                 void create_map_of(Map::Object* map);
 
-
                 // Searches the path
                 void search();
 
@@ -64,9 +66,6 @@
 
                 // Verifies if the path finder found the finish position
                 bool found_end_position();
-
-                // Verifies if the path finder found the path
-                bool found_path();
 
                 // Verifies if the path finder can find the path
                 bool can_find_path();

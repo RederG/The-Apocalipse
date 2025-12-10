@@ -7,7 +7,7 @@
 #include "../../Help/thread_manager.hpp"
 
 namespace Map{
-    std::map<std::string, std::shared_ptr<Object>> all_maps;
+    std::map<std::string, Object*> all_maps;
 
     Object::Object(sf::RenderWindow &window, PerlinNoise::Object &noise, sf::Vector2i area_size, sf::Vector2i area_group_size, sf::Vector2f scale, sf::Vector2i terrain_generation_size, sf::Vector2i updating_radius){
         this->window_target = &window;
@@ -297,7 +297,7 @@ namespace Map{
     AreaGroup* Object::new_area_group(int x, int y){
         AreaGroup* area_group = nullptr;
         if(this->get_area_group(x, y) == nullptr){
-            std::shared_ptr<AreaGroup> area_group_ptr = std::make_shared<AreaGroup>(*new AreaGroup(this->area_group_size, sf::Vector2i(x, y), this->area_size));
+            AreaGroup* area_group_ptr = new AreaGroup(this->area_group_size, sf::Vector2i(x, y), this->area_size);
             this->all_areas_group.push_back(area_group_ptr);
             area_group = &*area_group_ptr;
         }
@@ -318,7 +318,7 @@ namespace Map{
             }
         }
         if(area_group == nullptr){
-            std::shared_ptr<AreaGroup> new_area_group = std::make_shared<AreaGroup>(*new AreaGroup(this->area_group_size, area_position, this->area_size));
+            AreaGroup* new_area_group = new AreaGroup(this->area_group_size, area_position, this->area_size);
             this->all_areas_group.push_back(new_area_group);
             area_group = &*new_area_group;
         }
@@ -536,15 +536,18 @@ namespace Map{
     }
 
     void Object::clear(){
-        for(auto& working_area : this->all_working_areas){
+        this->elements_to_draw.clear();
+        this->sorted_elements_to_draw.clear();
+        for(auto& working_area : this->all_working_areas)
             working_area = nullptr;
-        }
+        this->all_working_areas.clear();
         for(auto& area_group : this->all_areas_group){
             area_group->clear();
-            area_group.reset();
+            delete area_group;
         }
-        this->all_working_areas.clear();
         this->all_areas_group.clear();
+        this->all_struct_contain_to_draw.clear();
+        this->all_struct_roof_to_draw.clear();
     }
 
     void Object::save_to(std::string save_file_location){
@@ -666,14 +669,16 @@ namespace Map{
     }
 
     void create(std::string map_name, sf::RenderWindow &window, PerlinNoise::Object* noise, sf::Vector2i area_size, sf::Vector2i area_group_size, sf::Vector2f scale, sf::Vector2i terrain_generation_size, sf::Vector2i update_radius){
-        Object map(window, *noise, area_size, area_group_size, scale, terrain_generation_size, update_radius);
         if(!exists(map_name))
-            all_maps[map_name] = std::make_shared<Object>(map);
+            all_maps[map_name] = new Object(window, *noise, area_size, area_group_size, scale, terrain_generation_size, update_radius);
     }
 
     void remove(std::string map_name){
-        all_maps.at(map_name).reset();
-        all_maps.erase(map_name);
+        if(exists(map_name)){
+            all_maps[map_name]->clear();
+            delete all_maps.at(map_name);
+            all_maps.erase(map_name);
+        }
     }
 
     bool exists(std::string map_name){
@@ -709,7 +714,7 @@ namespace Map{
         if(all_maps.empty() == false){
             for(auto& map : all_maps){
                 map.second->clear();
-                map.second.reset();
+                delete map.second;
             }
         }
         all_maps.clear();
@@ -729,7 +734,7 @@ namespace Map{
             if(std::filesystem::exists(file_path + "World/" + map_name + "/"+ map_name + ".settings")){
                 Map::Object* map = new Map::Object(window);
                 map->load_from(file_path, map_name);
-                all_maps[map_name] = std::make_shared<Map::Object>(*map);
+                all_maps[map_name] = map;
                 return true;
             }
             else

@@ -52,7 +52,7 @@
         };
 
         // Contains every player on the game
-        extern std::list< std::shared_ptr<Object> > container;
+        extern std::list<Object*> container;
 
         // This is the funcion that creates player
         void create_player(std::string player_name, Map::Object* map);

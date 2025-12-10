@@ -575,16 +575,44 @@ namespace StructureManager{
             }
         }
         Debugging::write("(Structure manager) - Terminating algorithm", "../algo.log", true, true);
+        reset();
+        Debugging::write("(Structure manager) - Algorythm terminated", "../algo.log", true, true);
+        actived = false;
+    }
+
+    void reset(){
         all_points.clear();
         all_visited_point.clear();
         all_spawn_points.clear();
+        for(auto& new_structure : all_new_structures){
+            delete new_structure.contain.roof;
+            new_structure.contain.roof = nullptr;
+            for(int i = 0; i < new_structure.contain.walls.size(); i++){
+                delete new_structure.contain.walls[i];
+                new_structure.contain.walls[i] = nullptr;
+            }
+            new_structure.contain.walls.clear();
+        }
         all_new_structures.clear();
         all_new_structures_position.clear();
+        for(auto& structure : all_structures){
+            if(structure.contain.roof != nullptr){  
+                delete structure.contain.roof;
+                structure.contain.roof = nullptr;
+            }
+            for(int i = 0; i < structure.contain.walls.size(); i++){
+                if(structure.contain.walls[i] != nullptr){
+                    delete structure.contain.walls[i];
+                    structure.contain.walls[i] = nullptr;
+                }
+            }
+            structure.contain.walls.clear();
+        }
         all_structures.clear();
         all_structures_position.clear();
         parent_points_position.clear();
-        Debugging::write("(Structure manager) - Algorythm terminated", "../algo.log", true, true);
-        actived = false;
+        Counter::point = 0;
+        Counter::struct_to_be_valid = 0;
     }
 
 };

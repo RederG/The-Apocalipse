@@ -6,7 +6,7 @@
 
 #define PI 3.14
 
-std::list< std::shared_ptr<Player::Object> > Player::container;
+std::list<Player::Object*> Player::container;
 
 namespace Player{
 
@@ -249,7 +249,8 @@ namespace Player{
     }
 
     void create_player(std::string player_name, Map::Object* map){
-        std::shared_ptr<Player::Object> player = std::make_shared<Player::Object>( *new Player::Object(player_name) );
+        Player::Object new_player(player_name);
+        Player::Object* player = new Player::Object(player_name);
         Entity::container.push_back(player);
         Player::container.push_back(player);
         Knife* knife = new Knife();

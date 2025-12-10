@@ -256,7 +256,7 @@
         };
         
         //This list contains every Entity on the map
-        extern std::list< std::shared_ptr<Object> > container;
+        extern std::list<Object*> container;
 
         // The scale of all entities on the map
         const sf::Vector2f ENTITY_SCALE = sf::Vector2f(2, 2);

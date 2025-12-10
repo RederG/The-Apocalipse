@@ -2,7 +2,7 @@
 
 namespace Probability{
 
-    std::vector<std::shared_ptr<Universe>> all_universes;
+    std::vector<Universe*> all_universes;
 
     void init(){
         Debugging::write("Intialising all probabilities", Debugging::get_state_of(Debugging::In_game));
@@ -98,6 +98,10 @@ namespace Probability{
 
     void terminate(){
         Debugging::write("Destroying all probabilities", Debugging::get_state_of(Debugging::In_game));
+        while(!all_universes.empty()){
+            delete all_universes[0];
+            all_universes.erase(all_universes.begin());
+        }
         all_universes.clear();
         Debugging::write("Destroying all probabilities terminated", Debugging::get_state_of(Debugging::In_game));
     }
@@ -161,7 +165,7 @@ namespace Probability{
     }
 
     void new_universe(std::string name, std::map<std::string, char> all_events, char max_percentage){
-        all_universes.push_back(std::make_shared<Universe>(*new Universe(name, all_events, max_percentage)));
+        all_universes.push_back(new Universe(name, all_events, max_percentage));
     }
 
     void delete_universe(std::string name){

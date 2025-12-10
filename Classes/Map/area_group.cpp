@@ -129,7 +129,7 @@ namespace Map{
                 new_area = &*area_ptr;
             }
             else{
-                std::shared_ptr<Area> new_area_ptr = std::make_shared<Area>(*new Area(this->area_size, sf::Vector2i(x, y)));
+                Area* new_area_ptr = new Area(this->area_size, sf::Vector2i(x, y));
                 
                 int index = Main::get_index(x, y, this->area_group_size.x, area_group_size.y);
                 if(int(x) == 0 && x < 0)
@@ -150,14 +150,13 @@ namespace Map{
         Area* area_ptr = nullptr;
         if(this->is_mine(area->get_position().x, area->get_position().y)){
             int index = Main::get_index(area->get_position().x, area->get_position().y, this->area_group_size.x, this->area_group_size.y);
-            std::shared_ptr<Area> new_area = std::make_shared<Area>(*area);
-            area_ptr = &*new_area;
-            this->all_areas[index] = new_area;
+            this->all_areas[index] = area;
+            area_ptr = area;
         }
         return area_ptr;
     }
 
-    std::vector<std::shared_ptr<Area>> AreaGroup::get_all_areas(){
+    std::vector<Area*> AreaGroup::get_all_areas(){
         return this->all_areas;
     }
 
@@ -166,7 +165,7 @@ namespace Map{
             for(auto& area : this->all_areas){
                 if(area != nullptr){
                     area->clear();
-                    area.reset();
+                    delete area;
                 }
             }
         }
