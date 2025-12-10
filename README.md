@@ -28,7 +28,8 @@ PLEASE RESPECT THAT SFML SAID ABOUT THE "COMPILER ISSUE" THAT IT MUST BE THE SAM
 
 ## BUILDING THE APP
 
-After the download, you can download the project. 
+After the download, you can clone the project. 
+
 After that, in the terminal, create the "build" folder. Then write the command and execute it (the last instruction -I"{path_to_SFML_include_files(like D:/SFML-3.0.2/include)}" is important, you must put the absolute/relative path to the include files of SFML) :
 - g++ -c ../src/main.cpp ../src/window_menu/*.cpp ../src/Help/*.cpp ../src/Effects/*.cpp ../src/Entities/*.cpp ../src/Graphicals/*.cpp ../src/InteractiveObjects/*.cpp ../src/Items/*.cpp ../src/Items/Effect_items/*.cpp ../src/Items/Foods/*.cpp ../src/Items/Weapons/*.cpp ../src/Map/*.cpp ../src/Map/Structures/*.cpp ../src/Others/*.cpp -I"{path_to_SFML_include_files(like D:/SFML-3.0.2/include)}"
 
