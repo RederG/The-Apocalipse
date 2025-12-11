@@ -1,6 +1,6 @@
 #include "../../headers/main.hpp"
 #include "../../headers/window_menu/player_data_window.hpp"
-#include "../../headers/window_menu/world_settings.hpp"
+#include "../../headers/window_menu/world_settings_window.hpp"
 
 namespace PlayerDataWindow{
     std::string player_gaming_time;

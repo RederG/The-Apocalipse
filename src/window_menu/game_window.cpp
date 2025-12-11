@@ -1,6 +1,6 @@
 #include "../../headers/Help/the_apocalipse.hpp"
 #include "../../headers/window_menu/game_window.hpp"
-#include "../../headers/window_menu/world_settings.hpp"
+#include "../../headers/window_menu/world_settings_window.hpp"
 
 namespace GameWindow{
     std::vector<std::pair<std::string, ContainManager::Types>> all_elements{

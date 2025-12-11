@@ -4,7 +4,6 @@ Web
 *.o
 Players
 *.exe
-*.txt
 *.save
 THE_APOCALIPSE
 *.so.3.0
@@ -14,3 +13,8 @@ THE_APOCALIPSE
 include
 lib
 extern
+*.cmake
+CMakeFiles
+CMakeCache.txt
+compile_commands.json
+Makefile

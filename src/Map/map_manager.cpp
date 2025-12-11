@@ -3,7 +3,7 @@
 #include "../../headers/InteractiveObjects/all_interactive_objects.hpp"
 #include "../../headers/Entities/player.hpp"
 #include "../../headers/Others/bullet.hpp"
-#include "../../headers/window_menu/world_settings.hpp"
+#include "../../headers/window_menu/world_settings_window.hpp"
 #include "../../headers/Help/thread_manager.hpp"
 
 namespace Map{

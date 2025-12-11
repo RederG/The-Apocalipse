@@ -7,7 +7,7 @@
 #include "../headers/window_menu/game_window.hpp"
 #include "../headers/window_menu/game_pause_window.hpp"
 #include "../headers/window_menu/game_over_window.hpp"
-#include "../headers/window_menu/world_settings.hpp"
+#include "../headers/window_menu/world_settings_window.hpp"
 
 bool main_first_drawing = true;
 sf::Vector2f old_window_size;
