@@ -8,7 +8,7 @@
         enum Action{
             move_up, move_down, move_right, move_left,
             open_inventory, close_inventory,
-            interaction,
+            interact,
             use_item, remove_item, take_item,
             pause
         };
@@ -68,7 +68,7 @@
                 {Main::malagasy, L"Alaina ilay zavatra"},
             }},
 
-            {interaction, {
+            {interact, {
                 {Main::english, L"Interact"},
                 {Main::french, L"Interagir"},
                 {Main::malagasy, L"Ampiasaina"},

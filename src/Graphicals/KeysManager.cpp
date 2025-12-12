@@ -17,7 +17,7 @@ namespace KeysManager{
     std::map<Action, std::string> all_actions_to_special_keys{
         {Action::open_inventory,    "ctrl"},
         {Action::close_inventory,   "ctrl"},
-        {Action::interaction,       "alt"},
+        {Action::interact,          "alt"},
     };
 
     void draw_key(Action action, sf::Vector2f position){
@@ -74,7 +74,7 @@ namespace KeysManager{
                 && (state == Player::State::Look_at_Inventory || state == Player::State::Interacting_with_objects)
                 && player->get_inventory()->get_current_item() != nullptr)
             return true;
-        else if(action == interaction && (player->get_nearest_interactive_object() != nullptr))
+        else if(action == interact && (player->get_nearest_interactive_object() != nullptr))
             return true;
         else
             return false;

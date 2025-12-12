@@ -171,15 +171,20 @@ namespace GameWindow{
                     }
                 }
                 
-                if(KeysManager::try_to(KeysManager::Action::interaction, key->control, key->alt, key->shift)){
+                if(KeysManager::try_to(KeysManager::Action::interact, key->control, key->alt, key->shift)){
                     for(auto player : Player::container){
                         if(player->Player::Object::get_state() == Player::State::Playing){
-                            if(player->get_nearest_interactive_object() != nullptr){
-                                
+                            InteractiveObjects::Object* obj = player->get_nearest_interactive_object();
+                            if(obj != nullptr){
+                                if(obj->get_interaction_type() != InteractiveObjects::Type::nothing){
+                                    obj->act();
+                                    if(obj->get_interaction_type() == InteractiveObjects::Type::container)
+                                        player->set_state(Player::State::Interacting_with_objects);
+                                }
                             }
                             break;
                         }
-                        if(player->Player::Object::get_state() == Player::State::Interacting_with_objects){
+                        else if(player->Player::Object::get_state() == Player::State::Interacting_with_objects){
                             Player::set_state(Player::State::Playing);
                             break;
                         }
