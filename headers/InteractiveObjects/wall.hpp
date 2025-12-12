@@ -15,6 +15,7 @@
         class Object : public InteractiveObjects::Object{
             public:
                 Object(Type wall_type, sf::Vector2i position);
+                void act() override;
                 sf::Sprite get_sprite(Map::Object* map, sf::Color color = sf::Color::White) override;
                 sf::Vector2f get_map_position(bool virtual_position = false) override;
                 sf::RectangleShape get_collision_rect(Map::Object* map, sf::Color color = sf::Color::White) override;
