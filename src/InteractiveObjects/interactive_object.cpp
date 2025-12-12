@@ -9,6 +9,8 @@ namespace InteractiveObjects{
 
     Object::Object(){}
 
+    void Object::act(){}
+
     Type Object::get_interaction_type(){
         return this->interaction_type;
     }

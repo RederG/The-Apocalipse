@@ -17,6 +17,7 @@
             public:
                 Object();
                 Type get_interaction_type();
+                virtual void act();
                 sf::RectangleShape get_collision_rect(Map::Object* map, sf::Color color = sf::Color::White) override;
             protected:
                 Type interaction_type;

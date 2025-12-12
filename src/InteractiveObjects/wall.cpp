@@ -28,6 +28,17 @@ namespace Wall{
             this->interaction_type = InteractiveObjects::Type::simple;
     }
 
+    void Object::act(){
+        if(this->wall_type == Wall::Type::down_with_door)
+            this->wall_type = Wall::Type::down_with_open_door;
+        else if(this->wall_type == Wall::Type::with_door)
+            this->wall_type = Wall::Type::with_open_door;
+        else if(this->wall_type == Wall::Type::down_with_open_door)
+            this->wall_type = Wall::Type::down_with_door;
+        else if(this->wall_type == Wall::Type::with_open_door)
+            this->wall_type = Wall::Type::with_door;
+    }
+
     sf::Sprite Object::get_sprite(Map::Object* map, sf::Color color){
         sf::Sprite wall_sprite(*AllTextures::get("struct_default_wall"));
         wall_sprite.setTextureRect(textures.at(this->wall_type));
@@ -61,7 +72,7 @@ namespace Wall{
         rect.setOrigin({0, size.y});
         rect.setPosition(position);
 
-        if(this->wall_type != down_with_open_door || this->wall_type != with_open_door)
+        if(this->wall_type != down_with_open_door && this->wall_type != with_open_door)
             return rect;
         else
             return *new sf::RectangleShape({0, 0});
