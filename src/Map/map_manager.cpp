@@ -266,8 +266,8 @@ namespace Map{
         return this->all_working_areas;
     }
 
-    std::vector<Area*> Object::get_rendering_areas(){
-        return this->all_render_areas;
+    std::vector<Area*> Object::get_all_updating_areas(){
+        return this->all_updating_areas;
     }
 
     std::vector<std::pair<int, int>> Object::get_all_areas_position(){
@@ -488,7 +488,7 @@ namespace Map{
         for(float y = player_area.y - gen.y, y_window = 0; y <= player_area.y + gen.y; y++, y_window++){
             for(float x = player_area.x - gen.x, x_window = 0; x <= player_area.x + gen.x; x++, x_window++){
                 Area* area = this->get_area_at(x, y);
-                this->all_render_areas.push_back(area);
+                this->all_updating_areas.push_back(area);
                 if(!skip)
                     this->all_struct_contain_to_draw.push_back(area->get_position());
                 skip = !skip;
@@ -642,7 +642,7 @@ namespace Map{
     }
 
     bool Object::is_for_render(Area* area){
-        if(std::find(this->all_render_areas.begin(), this->all_render_areas.end(), area) != this->all_render_areas.end())
+        if(std::find(this->all_updating_areas.begin(), this->all_updating_areas.end(), area) != this->all_updating_areas.end())
             return true;
         else
             return false;

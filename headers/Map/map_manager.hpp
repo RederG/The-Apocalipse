@@ -248,8 +248,9 @@
                 //map elements' positioning, zombie spawning, ... )
                 std::vector<Area*> get_all_working_areas();
 
-                // Gets all areas for rendering stuff ( It is for the drawing and performance )
-                std::vector<Area*> get_rendering_areas();
+                // Gets all areas for the rendering, updating MapElements like Zombies, 
+                //structure's content, etc
+                std::vector<Area*> get_all_updating_areas();
 
                 // Gets all working areas' position
                 std::vector<std::pair<int, int>> get_all_areas_position();
@@ -335,7 +336,7 @@
                 PerlinNoise::Object* noise_target; // The noise that tha map will use
                 std::vector<AreaGroup*> all_areas_group; // All groupement of areas
                 std::vector<Area*> all_working_areas; // all areas that should be render
-                std::vector<Area*> all_render_areas; // all areas that should be render
+                std::vector<Area*> all_updating_areas; // all areas that should be render
                 sf::Vector2i old_player_area; // The area where the player is before
                 sf::Vector2f player_pos_window; // the player's position on the window
                 sf::Vector2f scale; // The scale of one environment element

@@ -228,7 +228,7 @@ namespace PathFinding{
             else
                 this->all_g_values.clear();
 
-            for(auto area : map->get_rendering_areas()){
+            for(auto area : map->get_all_updating_areas()){
                 sf::Vector2f area_position;
                 area_position.x = area->get_position().x;
                 area_position.y = area->get_position().y;
