@@ -177,42 +177,23 @@ namespace Zombie{
     void Object::random_pos(Map::Object* map){
         Map::Area* player_area = map->get_player_area();
         Map::Area* spawn_area = nullptr;
-        std::vector<Map::Area*> all_spawn_areas;
-        for(auto area : map->get_all_working_areas()){
+        std::vector<sf::Vector2i> all_spawn_point;
+        for(auto area : map->get_all_updating_areas()){
             bool spawn_point_exists = false;
-            for(int x = 0; x < area->get_all_elements().size(); x++){
-                for(int y = 0; y < area->get_all_elements()[x].size(); y++){
+            for(int x = 0; x < area->get_all_elements().size() && TheApocalipse::is_running() && area != player_area; x++){
+                for(int y = 0; y < area->get_all_elements()[x].size() && TheApocalipse::is_running() && area != player_area; y++){
                     MapElement::WorldContent element = area->get_all_elements()[x][y];
                     if(element == MapElement::WorldContent::spawn_zombie_1 || 
                             element == MapElement::WorldContent::spawn_zombie_2 || 
                             element == MapElement::WorldContent::spawn_zombie_3){
-                        spawn_point_exists = true;
-                        break;
-                    }
-                }
-            }
-            if(spawn_point_exists && (area->get_position().x != player_area->get_position().x || area->get_position().y != player_area->get_position().y)){
-                all_spawn_areas.push_back(area);
-            }
-        }
-        if(all_spawn_areas.size() > 0)
-            spawn_area = &*all_spawn_areas[Main::random_value() % all_spawn_areas.size()];
-
-        std::vector<sf::Vector2i> all_spawn_point;
-        if(spawn_area != nullptr){
-            for(int x = 0; x < spawn_area->get_all_elements().size(); x++){
-                for(int y = 0; y < spawn_area->get_all_elements()[x].size(); y++){
-                    MapElement::WorldContent element = spawn_area->get_all_elements()[x][y];
-                    if(element == MapElement::WorldContent::spawn_zombie_1 || 
-                            element == MapElement::WorldContent::spawn_zombie_2 || 
-                            element == MapElement::WorldContent::spawn_zombie_3){
-                        all_spawn_point.push_back({18*spawn_area->get_position().x + x, 18*spawn_area->get_position().y + y});
-                        break;
+                        all_spawn_point.push_back({
+                            area->get_size().x*area->get_position().x + x, 
+                            area->get_size().y*area->get_position().y + y
+                        });
                     }
                 }
             }
         }
-
         if(all_spawn_point.empty() == false){
             sf::Vector2i spawn_pos = all_spawn_point[Main::random_value() % all_spawn_point.size()];
             this->map_position = {float(spawn_pos.x), float(spawn_pos.y)};
@@ -339,7 +320,7 @@ namespace Zombie{
     }
 
     void create_multiple(unsigned int number_of_zombies, Map::Object* map){
-        for (int i = 0; i < number_of_zombies; i++){
+        for (int i = 0; i < number_of_zombies && TheApocalipse::is_running(); i++){
             Object* zombie = new Object();
             container.push_back(zombie);
             Entity::container.push_back(zombie);

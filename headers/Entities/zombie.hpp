@@ -58,7 +58,7 @@
         */
         void create_multiple(unsigned int number_of_zombies, Map::Object* map);
 
-        // Updates all zombies
+        // Updates all zombies' pathfinder
         void everyone_search_player();
 
         // Verifies if the zombies are searching

@@ -307,11 +307,11 @@ namespace StructureManager{
     void sort_points(std::vector<std::pair<int, int>>& points){
         std::vector<std::pair<int, int>> first_sort_vector = points;
         // Sorting with the Y coodinates
-        for(int i = 0; i < first_sort_vector.size(); i++){
-            for(int j = 0; j < first_sort_vector.size(); j++){
+        for(int i = 0; i < first_sort_vector.size() && TheApocalipse::is_running(); i++){
+            for(int j = 0; j < first_sort_vector.size() && TheApocalipse::is_running(); j++){
                 std::pair<int, int> element = first_sort_vector[j];
                 int correct_position = 0;
-                for(int k = 1; k < first_sort_vector.size(); k++){
+                for(int k = 1; k < first_sort_vector.size() && TheApocalipse::is_running(); k++){
                     if(element.second >= first_sort_vector[k].second)
                         correct_position = k;
                 }
@@ -324,7 +324,7 @@ namespace StructureManager{
         std::vector<std::pair<int, int>> temporary_vector;
         int y = 0;
         // Preparing sorting with the X coordinates
-        for(int i = 0; i < first_sort_vector.size(); i++){
+        for(int i = 0; i < first_sort_vector.size() && TheApocalipse::is_running(); i++){
             if(y != first_sort_vector[i].second && !temporary_vector.empty()){
                 second_sort_vector.push_back(temporary_vector);
                 temporary_vector.clear();
@@ -335,12 +335,12 @@ namespace StructureManager{
         second_sort_vector.push_back(temporary_vector);
 
         // Sorting with the X coordinates
-        for(int i = 0; i < second_sort_vector.size(); i++){
-            for(int j = 0; j < second_sort_vector[i].size(); j++){
+        for(int i = 0; i < second_sort_vector.size() && TheApocalipse::is_running(); i++){
+            for(int j = 0; j < second_sort_vector[i].size() && TheApocalipse::is_running(); j++){
                 for(int k = 0; k < second_sort_vector[i].size(); k++){
                     std::pair<int, int> element = second_sort_vector[i][k];
                     int correct_position = 0;
-                    for(int l = 1; l < second_sort_vector[i].size(); l++){
+                    for(int l = 1; l < second_sort_vector[i].size() && TheApocalipse::is_running(); l++){
                         if(element.first >= second_sort_vector[i][l].first)
                             correct_position = l;
                     }
@@ -353,8 +353,8 @@ namespace StructureManager{
         // Setting the sorted spawn points vector
         points.clear();
         set_perimeter_from(second_sort_vector);
-        for(int i = 0; i < second_sort_vector.size(); i++){
-            for(int j = 0; j < second_sort_vector[i].size(); j++)
+        for(int i = 0; i < second_sort_vector.size() && TheApocalipse::is_running(); i++){
+            for(int j = 0; j < second_sort_vector[i].size() && TheApocalipse::is_running(); j++)
                 points.push_back(second_sort_vector[i][j]);
         }
     }

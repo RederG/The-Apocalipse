@@ -272,6 +272,15 @@ namespace GameWindow{
                         Bullet::verify_collision();
                     if(TheApocalipse::is_running())
                         Entity::set_all_nearest_interactive_objects();
+
+                    const int MAX_ZOMBIES = 5;
+
+                    if(Tomb::verify_all_life_time() == true)
+                        Zombie::create_multiple(1, Map::get(Map::NAME));
+                    if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
+                        Zombie::create_multiple(1, Map::get(Map::NAME));
+                    if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
+                        first_zombies = false;
                 }
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::game_thread) == ThreadManager::State::Paused && !paused){
@@ -344,15 +353,6 @@ namespace GameWindow{
         Bullet::verify_bullets_lives();
 
         Bullet::move_all(fps);
-
-        const int MAX_ZOMBIES = 5;
-
-        if(Tomb::verify_all_life_time() == true)
-            Zombie::create_multiple(1, Map::get(Map::NAME));
-        if(Zombie::container.size() < MAX_ZOMBIES && Map::get(Map::NAME) != nullptr && Map::get(Map::NAME)->is_updated() && first_zombies == true)
-            Zombie::create_multiple(1, Map::get(Map::NAME));
-        if(Zombie::container.size() >= MAX_ZOMBIES && first_zombies == true)
-            first_zombies = false;
     }
 
     void Render(){
@@ -362,7 +362,7 @@ namespace GameWindow{
     }
 
     void Event(){
-        if(Main::clock_seconds(1, time_update) == Main::GameTimer::Reached)
+        if(Main::clock_seconds(0.5f, time_update) == Main::GameTimer::Reached)
             time_updating = true;
         else
             time_updating = false;
@@ -432,6 +432,7 @@ namespace GameWindow{
                     
                 Player::create_player(player_choosed, Map::get(Map::NAME));
                 Player::set_state(Player::State::Playing);
+                first_zombies = true;
             }
 
             else if(!player_data.dead){
@@ -487,18 +488,20 @@ namespace GameWindow{
             
             Main::first_drawing(false);
         }
+
         sf::Clock clock;
         Input();
         if(time_updating)
             Debugging::write("Input time : " + std::to_string(clock.getElapsedTime().asSeconds()));
-        
+
         if(!Main::window()->isOpen())
             return;
         
         clock.restart();
         Update();
         if(time_updating)
-            Debugging::write("Update time : " + std::to_string(clock.getElapsedTime().asSeconds()));  
+            Debugging::write("Update time : " + std::to_string(clock.getElapsedTime().asSeconds()));
+
         clock.restart();
         Render();
         if(time_updating)

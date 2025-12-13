@@ -70,6 +70,7 @@ namespace Container{
     Item::Object* Object::remove_item_on(int location){
         Item::Object* item_deleted = nullptr;
         if(location >= 0 && location < this->max_size && this->contain[location] != nullptr){
+            item_deleted = &*this->contain[location];
             this->contain[location].reset();
         }
         return item_deleted;

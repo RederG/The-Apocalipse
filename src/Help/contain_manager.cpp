@@ -152,36 +152,26 @@ namespace ContainManager{
     }
 
     void Object::add_sprite(std::string name){
-        this->all_sprites[name] = std::make_shared<sf::Sprite>(*new sf::Sprite(*new sf::Texture()));
+        this->all_sprites[name] = new sf::Sprite(*new sf::Texture());
     }
 
     void Object::add_rect(std::string name){
-        sf::RectangleShape new_rect;
-        this->all_rectangles[name] = std::make_shared<sf::RectangleShape>(new_rect);
+        this->all_rectangles[name] = new sf::RectangleShape();
     }
 
     void Object::add_text(std::string name, std::string text, sf::Font *font, int size, bool has_rect){
-        if(font != nullptr){
-            sf::Text new_text(*font, text, size);
-            this->all_texts[name] = std::make_shared<sf::Text>(new_text);
-        }
-        else if(font == nullptr){
-            sf::Text new_text(*new sf::Font, text, size);
-            this->all_texts[name] = std::make_shared<sf::Text>(new_text);
-        }
-        if(has_rect == true){
-            sf::RectangleShape text_rect;
-            this->all_texts_rectangle[name] = std::make_shared<sf::RectangleShape>(text_rect);
-        }
+        if(font != nullptr)
+            this->all_texts[name] = new sf::Text(*font, text, size);
+        else if(font == nullptr)
+            this->all_texts[name] = new sf::Text(*font, text, size);
+        if(has_rect == true)
+            this->all_texts_rectangle[name] = new sf::RectangleShape();
     }
 
     void Object::add_text(std::string name, bool has_rect){
-        sf::Text text(*new sf::Font());
-        this->all_texts[name] = std::make_shared<sf::Text>(text);
-        if(has_rect == true){
-            sf::RectangleShape text_rect;
-            this->all_texts_rectangle[name] = std::make_shared<sf::RectangleShape>(text_rect);
-        }
+        this->all_texts[name] = new sf::Text(*new sf::Font());
+        if(has_rect == true)
+            this->all_texts_rectangle[name] = new sf::RectangleShape();
     }
 
     void Object::add_button(std::string name, sf::Text *text){
@@ -192,12 +182,11 @@ namespace ContainManager{
                 break;
             }
         }
-        Button button(text, this->window_target, text_rect);
-        this->all_buttons[name] = std::make_shared<Button>(button);
+        this->all_buttons[name] = new Button(text, this->window_target, text_rect);
     }
 
     void Object::add_selector(std::string name, int choices_number, sf::Vector2f size){
-        this->all_selectors[name] = std::make_shared<GraphicalSelector>(*new GraphicalSelector(choices_number, size, {0, 0}));
+        this->all_selectors[name] = new GraphicalSelector(choices_number, size, {0, 0});
     }
 
     void Object::remove_sprite(std::string name){
@@ -374,11 +363,35 @@ namespace ContainManager{
     }
 
     void Object::clear(){
+        for(auto& text : this->all_texts){
+            delete text.second;
+            text.second = nullptr;
+        }
         this->all_texts.clear();
+        for(auto& sprite : this->all_sprites){
+            delete sprite.second;
+            sprite.second = nullptr;
+        }
         this->all_sprites.clear();
+        for(auto& rect : this->all_rectangles){
+            delete rect.second;
+            rect.second = nullptr;
+        }
         this->all_rectangles.clear();
+        for(auto& button : this->all_buttons){
+            delete button.second;
+            button.second = nullptr;
+        }
         this->all_buttons.clear();
+        for(auto& text_rect : this->all_texts_rectangle){
+            delete text_rect.second;
+            text_rect.second = nullptr;
+        }
         this->all_texts_rectangle.clear();
+        for(auto& selector : this->all_selectors){
+            delete selector.second;
+            selector.second = nullptr;
+        }
         this->all_selectors.clear();
     }
 
