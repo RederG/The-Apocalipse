@@ -47,10 +47,12 @@
 
                 int attack_value = 0;
                 sf::Clock attack_timer;
+
+                bool locating_player = false;
         };
         
         //This list contains every Zombies on the map
-        extern std::list<Object*> container;
+        extern std::vector<Object*> container;
 
         /*
         This function creates multiple zombies.

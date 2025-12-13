@@ -99,9 +99,11 @@ namespace PathFinding{
         bool path_found = false;
         //6283872
         if(!this->path.empty() && !this->parent_points.empty()){
-            if(this->parent_points.find(this->path.front()) != this->parent_points.end()){
-                if(this->parent_points[this->path.front()] == Main::get_pair2f_of(this->start_point))
+            for(auto parent_point : this->parent_points){
+                if(parent_point.first == this->path.front() && parent_point.second == Main::get_pair2f_of(this->start_point)){
                     path_found = true;
+                    break;
+                }
             }
         }
         return path_found;

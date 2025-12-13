@@ -193,6 +193,17 @@ namespace MapElement{
                     }
                 }
             }
+            for(auto tomb : Tomb::container){
+                sf::Vector2f distance = tomb->get_map_position();
+                distance.x -= element->get_map_position().x;
+                distance.y -= element->get_map_position().y;
+
+                float real_distance = sqrt(distance.x*distance.x + distance.y*distance.y);
+                if(real_distance < nearest_distance){
+                    nearest_distance = real_distance;
+                    nearest_obj = &*tomb;
+                }
+            }
             return nearest_obj;
         }
 

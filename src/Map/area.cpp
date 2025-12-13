@@ -225,7 +225,8 @@ namespace Map{
             
             for(int y = 0; y < this->size.y; y++){
                 for(int x = 0; x < this->size.x; x++)
-                    save_file.write(reinterpret_cast<char*>(&this->all_elements[x][y]), sizeof(MapElement::WorldContent));
+                    if(!this->all_elements.empty() && !this->all_elements[x].empty())
+                        save_file.write(reinterpret_cast<char*>(&this->all_elements[x][y]), sizeof(MapElement::WorldContent));
             }
             
             save_file.close();

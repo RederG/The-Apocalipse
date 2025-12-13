@@ -401,15 +401,20 @@ namespace Entity{
     bool verify_entity(){
         bool there_is_a_dead_entity = false;
         std::shared_ptr<Zombie::Object> zombie_ptr = nullptr;
-        for (auto zombie : Zombie::container){
+        for(int i = 0; i < Zombie::container.size(); i++){
+            Zombie::Object* zombie = Zombie::container[i];
             if(zombie->is_alive() == false){
+                ThreadManager::set_state_of(ThreadManager::Thread::zombie_pathfinding, ThreadManager::State::Paused);
                 Tomb::set_tomb_of(*zombie);
                 Entity::container.remove(zombie);
-                Zombie::container.remove(zombie);
+                Zombie::container.erase(Zombie::container.begin() + i);
+                delete zombie;
+                zombie = nullptr;
                 there_is_a_dead_entity = true;
                 break;
             }
         }
+        ThreadManager::set_state_of(ThreadManager::Thread::zombie_pathfinding, ThreadManager::State::Actived);
         return there_is_a_dead_entity;
     }
     
