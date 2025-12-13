@@ -4,7 +4,7 @@
 #define PI 3.14
 
 namespace Zombie{
-    std::list<Zombie::Object*> container;
+    std::vector<Zombie::Object*> container;
 
     bool searching = false;
     bool algo_paused = false;
@@ -80,6 +80,7 @@ namespace Zombie{
     }
 
     void Object::locates_player(){
+        this->locating_player = true;
         if(Entity::get_map() != nullptr){
             sf::Vector2f zombie_position = this->get_map_position();
             sf::Vector2f player_position = Entity::get_map()->get_player_map_pos();
@@ -87,61 +88,64 @@ namespace Zombie{
             this->A_star_path_finder->set_up(zombie_position, player_position, Entity::get_map());
             this->A_star_path_finder->find_path();
         }
+        this->locating_player = false;
     }
 
     void Object::move(){
-        if(this->A_star_path_finder->found_path()){
-            this->path_to_something = this->A_star_path_finder->get_path();
-            this->A_star_path_finder->clear_path();
-            this->moving = true;
-        }
-        if(this->path_to_something.empty() == true)
-            this->moving = false;
-        if(this->path_to_something.empty() == false){
-            sf::Vector2f point_to_reach = this->path_to_something.front();
-            sf::Vector2f end_point = this->path_to_something.back();
-            point_to_reach.x += 0.5;
-            point_to_reach.y += 0.5;
-            bool can_go_on_x = true;
-            bool can_go_on_y = true;
-            if(round(point_to_reach.x) > round(this->map_position.x)){
-                if(this->direction == Entity::Direction::left)
-                    can_go_on_x = false;
-                this->direction = Entity::Direction::right;
-                if(!this->is_colliding_with_other_entities() && can_go_on_x)
-                    this->move_on_map(this->velocity, 0);
-                else 
+        if(!this->locating_player){
+            if(this->A_star_path_finder->found_path()){
+                this->path_to_something = this->A_star_path_finder->get_path();
+                this->A_star_path_finder->clear_path();
+                this->moving = true;
+            }
+            if(this->path_to_something.empty() == true)
+                this->moving = false;
+            if(this->path_to_something.empty() == false){
+                sf::Vector2f point_to_reach = this->path_to_something.front();
+                sf::Vector2f end_point = this->path_to_something.back();
+                point_to_reach.x += 0.5;
+                point_to_reach.y += 0.5;
+                bool can_go_on_x = true;
+                bool can_go_on_y = true;
+                if(round(point_to_reach.x) > round(this->map_position.x)){
+                    if(this->direction == Entity::Direction::left)
+                        can_go_on_x = false;
+                    this->direction = Entity::Direction::right;
+                    if(!this->is_colliding_with_other_entities() && can_go_on_x)
+                        this->move_on_map(this->velocity, 0);
+                    else 
+                        this->path_to_something.erase(this->path_to_something.begin());
+                }
+                else if(round(point_to_reach.x) < round(this->map_position.x)){
+                    if(this->direction == Entity::Direction::right)
+                        can_go_on_x = false;
+                    this->direction = Entity::Direction::left;
+                    if(!this->is_colliding_with_other_entities() && can_go_on_x)
+                        this->move_on_map(-this->velocity, 0);
+                    else
+                        this->path_to_something.erase(this->path_to_something.begin());
+                }
+                else if(round(point_to_reach.y) > round(this->map_position.y)){
+                    if(this->direction == Entity::Direction::up)
+                        can_go_on_y = false;
+                    this->direction = Entity::Direction::down;
+                    if(!this->is_colliding_with_other_entities() && can_go_on_y)
+                        this->move_on_map(0, this->velocity);
+                    else 
+                        this->path_to_something.erase(this->path_to_something.begin());
+                }
+                else if(round(point_to_reach.y) < round(this->map_position.y)){
+                    if(this->direction == Entity::Direction::down)
+                        can_go_on_y = false;
+                    this->direction = Entity::Direction::up;
+                    if(!this->is_colliding_with_other_entities() && can_go_on_y)
+                        this->move_on_map(0, -this->velocity);
+                    else 
+                        this->path_to_something.erase(this->path_to_something.begin());
+                }
+                if(round(point_to_reach.x) == round(this->map_position.x) && round(point_to_reach.y) == round(this->map_position.y))
                     this->path_to_something.erase(this->path_to_something.begin());
             }
-            else if(round(point_to_reach.x) < round(this->map_position.x)){
-                if(this->direction == Entity::Direction::right)
-                    can_go_on_x = false;
-                this->direction = Entity::Direction::left;
-                if(!this->is_colliding_with_other_entities() && can_go_on_x)
-                    this->move_on_map(-this->velocity, 0);
-                else
-                    this->path_to_something.erase(this->path_to_something.begin());
-            }
-            else if(round(point_to_reach.y) > round(this->map_position.y)){
-                if(this->direction == Entity::Direction::up)
-                    can_go_on_y = false;
-                this->direction = Entity::Direction::down;
-                if(!this->is_colliding_with_other_entities() && can_go_on_y)
-                    this->move_on_map(0, this->velocity);
-                else 
-                    this->path_to_something.erase(this->path_to_something.begin());
-            }
-            else if(round(point_to_reach.y) < round(this->map_position.y)){
-                if(this->direction == Entity::Direction::down)
-                    can_go_on_y = false;
-                this->direction = Entity::Direction::up;
-                if(!this->is_colliding_with_other_entities() && can_go_on_y)
-                    this->move_on_map(0, -this->velocity);
-                else 
-                    this->path_to_something.erase(this->path_to_something.begin());
-            }
-            if(round(point_to_reach.x) == round(this->map_position.x) && round(point_to_reach.y) == round(this->map_position.y))
-                this->path_to_something.erase(this->path_to_something.begin());
         }
     }
 
@@ -336,8 +340,8 @@ namespace Zombie{
             if(ThreadManager::get_state_of(ThreadManager::Thread::zombie_pathfinding) == ThreadManager::State::Actived && 
                 Entity::get_map() != nullptr && Entity::get_map()->is_updated() && TheApocalipse::is_running()){
                 algo_paused = false;
-                for(auto zombie : Zombie::container)
-                    zombie->locates_player();
+                for(int i = 0; i < Zombie::container.size() && ThreadManager::get_state_of(ThreadManager::Thread::zombie_pathfinding) == ThreadManager::State::Actived; i++)
+                    Zombie::container[i]->locates_player();
             }
             else if(ThreadManager::get_state_of(ThreadManager::Thread::zombie_pathfinding) == ThreadManager::State::Paused &&
                 !algo_paused){

@@ -235,11 +235,13 @@ namespace GameWindow{
                     }
 
                     if (player->get_state() == Player::State::Interacting_with_objects){
-                        if(player->get_nearest_tomb(DISTANCE_MIN) != nullptr){
+                        InteractiveObjects::Object* obj = player->get_nearest_interactive_object();
+                        if(obj != nullptr && obj->get_interaction_type() == InteractiveObjects::Type::container && typeid(*obj) == typeid(Tomb::Object)){
+                            Tomb::Object* tomb = (Tomb::Object*)obj;
                             if(KeysManager::try_to(KeysManager::Action::move_right))
-                                player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->move_selector_to(Container::Direction::Right);
+                                tomb->get_inventory()->move_selector_to(Container::Direction::Right);
                             if(KeysManager::try_to(KeysManager::Action::move_left))
-                                player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->move_selector_to(Container::Direction::Left);
+                                tomb->get_inventory()->move_selector_to(Container::Direction::Left);
                         }
                         else{
                             player->set_state(Player::State::Playing);
@@ -313,7 +315,7 @@ namespace GameWindow{
                     Viewer::Items::change_to(&*player->get_inventory()->get_current_item());
             }
             
-            if (player->get_state() == Player::State::Look_at_Inventory){
+            else if(player->get_state() == Player::State::Look_at_Inventory){
                 Viewer::draw_container(player->get_inventory(), &*player, Entity::get_map(), true);
                 player->switch_animation_to(Entity::AnimationState::Default);
                 if(player->get_inventory()->get_current_item() != nullptr){
@@ -323,11 +325,13 @@ namespace GameWindow{
             }
             
             else if(player->Player::Object::get_state() == Player::State::Interacting_with_objects){
-                if(player->get_nearest_tomb(DISTANCE_MIN) != nullptr){
-                    Viewer::draw_container(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory(), player->get_nearest_tomb(DISTANCE_MIN), Entity::get_map(), true);
-                    if(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->get_current_item()!= nullptr)
-                        Viewer::Items::change_to(&*player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->get_current_item());
-                    if(player->get_nearest_tomb(DISTANCE_MIN)->get_inventory()->get_current_item() == nullptr)
+                InteractiveObjects::Object* obj = player->get_nearest_interactive_object();
+                if(obj != nullptr && obj->get_interaction_type() == InteractiveObjects::Type::container && typeid(*obj) == typeid(Tomb::Object)){
+                    Tomb::Object* tomb = (Tomb::Object*)obj;
+                    Viewer::draw_container(tomb->get_inventory(), tomb, Entity::get_map(), true);
+                    if(tomb->get_inventory()->get_current_item()!= nullptr)
+                        Viewer::Items::change_to(&*tomb->get_inventory()->get_current_item());
+                    if(tomb->get_inventory()->get_current_item() == nullptr)
                         Viewer::Items::change_to(nullptr);
                 }
                 else{
@@ -488,23 +492,12 @@ namespace GameWindow{
             
             Main::first_drawing(false);
         }
-
-        sf::Clock clock;
-        Input();
-        if(time_updating)
-            Debugging::write("Input time : " + std::to_string(clock.getElapsedTime().asSeconds()));
-
+        
+        Input();    
         if(!Main::window()->isOpen())
             return;
-        
-        clock.restart();
-        Update();
-        if(time_updating)
-            Debugging::write("Update time : " + std::to_string(clock.getElapsedTime().asSeconds()));
-
-        clock.restart();
+            
+        Update();   
         Render();
-        if(time_updating)
-            Debugging::write("Render time : " + std::to_string(clock.getElapsedTime().asSeconds()) + "\n");
     }
 }
