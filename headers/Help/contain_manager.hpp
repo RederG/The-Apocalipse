@@ -85,12 +85,12 @@
             private:
                 sf::RenderWindow *window_target;
                 std::vector<std::pair<std::string, Types>> *priority_drawing_list_target;
-                std::map<std::string, std::shared_ptr<sf::Sprite>> all_sprites;
-                std::map<std::string, std::shared_ptr<sf::Text>> all_texts;
-                std::map<std::string, std::shared_ptr<sf::RectangleShape>> all_texts_rectangle;
-                std::map<std::string, std::shared_ptr<sf::RectangleShape>> all_rectangles;
-                std::map<std::string, std::shared_ptr<Button>> all_buttons;
-                std::map<std::string, std::shared_ptr<GraphicalSelector>> all_selectors;
+                std::map<std::string, sf::Sprite*> all_sprites;
+                std::map<std::string, sf::Text*> all_texts;
+                std::map<std::string, sf::RectangleShape*> all_texts_rectangle;
+                std::map<std::string, sf::RectangleShape*> all_rectangles;
+                std::map<std::string, Button*> all_buttons;
+                std::map<std::string, GraphicalSelector*> all_selectors;
                 sf::Sprite* sprite;
         };
     };

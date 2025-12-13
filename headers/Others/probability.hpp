@@ -22,6 +22,10 @@
 
                 // Gets the name of the universe
                 std::string get_name();
+                
+                void init();
+
+                void terminate();
 
             private:
                 std::string universe_name;
@@ -29,7 +33,6 @@
                 char max_percentage;
                 std::vector<std::string> all_events;
                 std::vector<char> contain;
-                void init();
         };
         
         // Creates a new universe

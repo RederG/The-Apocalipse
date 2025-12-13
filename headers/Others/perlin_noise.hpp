@@ -88,9 +88,6 @@
                 // Sets the grid's size of the noise
                 void set_grid_size_to(sf::Vector2i new_grid_size);
 
-                // Sets the new begining point of the noise
-                void set_init_pixel_to(Vector2i new_begining_point);
-
                 // Gets the name of the noise
                 std::string get_name();
 
@@ -109,44 +106,11 @@
                 // Gets the cell's size of the noise
                 int get_cell_size();
 
-                // Gets the grid's size of the noise
-                sf::Vector2i get_grid_size();
-
-                // Gets the pixel that the noise is working on
-                Vector2i get_loading_pixel();
-
-                // Gets the total of pixels loaded
-                Vector2i get_loaded_pixels();
-
-                // Gets all the pixels of the noise
-                uint8_t* get_pixels();
-
-                // Gets the first pixel
-                Vector2i get_first_pixel();
-
                 // Gets all pixels colors
                 std::map<std::shared_ptr<Interval>, Pixel_color> get_pixels_colors();
 
-                // Verifies if all of the noise's pixels are loaded
-                bool is_terminated();
-
                 // Gets the noise value of a specific point
                 float get_noise_at(float x, float y);
-
-                // Updates the pixel that the noise is working on
-                void update_pixels();
-
-                // Resets the pixel that the noise is working on to (0, 0)
-                void reset();
-
-                // Gets the texture of the noise (if all of the pixels are loaded)
-                sf::Texture get_texture();
-
-                // Updates all the pixels of the noise
-                void create_noise();
-
-                // Sets the pixel that the noise is working on to the next
-                void next_pixel();
 
                 // Configures the color of the noise
                 //
@@ -160,18 +124,12 @@
                 // Gets the color of a specific pixel
                 sf::Color get_color_at(int x, int y);
 
-                // Prepare the noise to be destroyed
-                void destroy();
-
             private:
                 std::string name;
                 float frequence, amplitude;
                 int octave, cell_size;
                 long long seed;
                 sf::Vector2i grid_size;
-                Vector2i pixel;
-                Vector2i init_pixel;
-                uint8_t* pixels;
                 std::map<std::shared_ptr<Interval>, Pixel_color> pixels_color;
         };
     

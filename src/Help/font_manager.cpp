@@ -2,19 +2,22 @@
 
 namespace FontManager{
 
-    std::map<Fonts, std::shared_ptr<sf::Font>> all_fonts; 
+    std::map<Fonts, sf::Font*> all_fonts; 
 
     void init_fonts(){
         Debugging::write("LOADING ALL FONTS.........", Debugging::get_state_of(Debugging::Description));
-        sf::Font Arial;
-
-        if(Arial.openFromFile("../res/Fonts/Arial_regular.ttf"))
+        all_fonts[Fonts::Arial] = new sf::Font();
+        
+        if(all_fonts[Fonts::Arial]->openFromFile("../res/Fonts/Arial_regular.ttf"))
             Debugging::write("Arial font loaded\n", Debugging::get_state_of(Debugging::Description));
 
-        all_fonts[Fonts::Arial] = std::make_shared<sf::Font>(Arial);
     }
 
     void destroy_all(){
+        for(auto& font : all_fonts){
+            delete font.second;
+            font.second = nullptr;
+        }
         all_fonts.clear();
         Debugging::write("FONTS DESTROYED", Debugging::get_state_of(Debugging::Description));
     }

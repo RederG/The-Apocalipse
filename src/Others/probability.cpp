@@ -99,6 +99,7 @@ namespace Probability{
     void terminate(){
         Debugging::write("Destroying all probabilities", Debugging::get_state_of(Debugging::In_game));
         while(!all_universes.empty()){
+            all_universes[0]->terminate();
             delete all_universes[0];
             all_universes.erase(all_universes.begin());
         }
@@ -110,9 +111,8 @@ namespace Probability{
         this->universe_name = name;
         this->universe_events_proba = all_events;
         this->max_percentage = max_percentage;
-        for(auto event : this->universe_events_proba){
+        for(auto event : this->universe_events_proba)
             this->all_events.push_back(event.first);
-        }
         this->init();
     }
 
@@ -139,6 +139,12 @@ namespace Probability{
                 }
             }
         }
+    }
+
+    void Universe::terminate(){
+        this->universe_events_proba.clear();
+        this->contain.clear();
+        this->all_events.clear();
     }
 
     std::string Universe::get_result(){
