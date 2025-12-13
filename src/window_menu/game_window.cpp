@@ -362,7 +362,7 @@ namespace GameWindow{
     }
 
     void Event(){
-        if(Main::clock_seconds(1, time_update) == Main::GameTimer::Reached)
+        if(Main::clock_seconds(0.5f, time_update) == Main::GameTimer::Reached)
             time_updating = true;
         else
             time_updating = false;
@@ -488,11 +488,23 @@ namespace GameWindow{
             
             Main::first_drawing(false);
         }
+
+        sf::Clock clock;
         Input();
+        if(time_updating)
+            Debugging::write("Input time : " + std::to_string(clock.getElapsedTime().asSeconds()));
+
         if(!Main::window()->isOpen())
             return;
         
+        clock.restart();
         Update();
+        if(time_updating)
+            Debugging::write("Update time : " + std::to_string(clock.getElapsedTime().asSeconds()));
+
+        clock.restart();
         Render();
+        if(time_updating)
+            Debugging::write("Render time : " + std::to_string(clock.getElapsedTime().asSeconds()) + "\n");
     }
 }

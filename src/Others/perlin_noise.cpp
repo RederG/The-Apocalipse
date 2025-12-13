@@ -108,10 +108,6 @@ namespace PerlinNoise{
         this->seed = seed;
         this->cell_size = cell_size;
         this->grid_size = grid_max_size;
-        this->init_pixel.x = 0;
-        this->init_pixel.y = 0;
-        this->pixel = this->init_pixel;
-        this->pixels = new uint8_t[this->grid_size.x*this->grid_size.y*4];
         this->pixels_color.clear();
     }
 
@@ -187,10 +183,6 @@ namespace PerlinNoise{
             this->seed = 1;
             this->cell_size = 20;
             this->grid_size = sf::Vector2i(500, 500);
-            this->init_pixel.x = 0;
-            this->init_pixel.y = 0;
-            this->pixel = this->init_pixel;
-            this->pixels = new uint8_t[this->grid_size.x*this->grid_size.y*4];
             this->pixels_color.clear();
         }
     }
@@ -223,10 +215,6 @@ namespace PerlinNoise{
         this->grid_size = new_grid_size;  
     }
 
-    void Object::set_init_pixel_to(Vector2i new_begining_point){
-        this->init_pixel = new_begining_point;
-    }
-
     std::string Object::get_name(){
         return this->name;
     }
@@ -251,43 +239,8 @@ namespace PerlinNoise{
         return this->cell_size;  
     }
 
-    Vector2i Object::get_loaded_pixels(){
-        Vector2i pixels_loaded;
-        pixels_loaded.x = ((this->pixel.y - this->init_pixel.y)*this->grid_size.x) + (this->pixel.x - this->init_pixel.x);
-        pixels_loaded.y = this->grid_size.x*this->grid_size.y;
-        return pixels_loaded;
-    }
-
-    Vector2i Object::get_loading_pixel(){
-        return this->pixel;
-    }
-
-    uint8_t* Object::get_pixels(){
-        return this->pixels;
-    }
-
-    sf::Vector2i Object::get_grid_size(){
-        return this->grid_size;
-    }
-
-    Vector2i Object::get_first_pixel(){
-        return this->init_pixel;
-    }
-
     std::map<std::shared_ptr<Interval>, Pixel_color> Object::get_pixels_colors(){
         return this->pixels_color;
-    }
-
-    bool Object::is_terminated(){
-        bool created = false;
-        if(this->get_loaded_pixels().x >= this->get_loaded_pixels().y)
-            created = true;
-        return created;
-    }
-
-    void Object::reset(){
-        pixels = new uint8_t[this->grid_size.x*this->grid_size.y*4];
-        this->pixel = this->init_pixel;
     }
 
     float Object::get_noise_at(float x, float y){
@@ -319,63 +272,6 @@ namespace PerlinNoise{
 
         horiz_interp = interpolate(vert_interp1, vert_interp2, distance.y);
         return horiz_interp;
-    }
-
-    void Object::next_pixel(){
-        this->pixel.x += 1;
-        if(this->pixel.x >= this->grid_size.x){
-            this->pixel.x = 0;
-            this->pixel.y += 1;
-        }
-        if(this->pixel.y >= this->grid_size.y){
-            this->pixel.x = this->grid_size.x;
-            this->pixel.y = this->grid_size.y;
-        }
-    }
-
-    sf::Texture Object::get_texture(){
-        sf::Texture texture;
-        sf::Vector2u size({(unsigned int)(this->grid_size.x), (unsigned int)(this->grid_size.y)});
-        if(texture.resize(size))
-            return *new sf::Texture();
-        texture.update(this->pixels);
-        return texture;
-    }
-
-    void Object::create_noise(){
-        this->reset();
-        while(this->is_terminated() == false)
-            this->update_pixels();
-    }
-
-    void Object::update_pixels(){
-        if(this->is_terminated() == false){
-            float value = 0;
-            float freq = this->frequence;
-            float amp = this->amplitude;
-            for(int o = 0; o < this->octave; o++){
-                value += this->get_noise_at(this->pixel.x*freq/this->cell_size, this->pixel.y*freq/this->cell_size)*amp;
-                freq *= 2;
-                amp /= 2;
-            }
-
-            if(value > 1.0)
-                value = 1.0;
-            if(value < -1.0)
-                value = -1.0;
-
-            int color = (int)(((value + 1.0f) * 0.5f) * 255);
-
-            sf::Color pixel_color = this->adapt_color(color);
-
-            int index = ((this->pixel.y - this->init_pixel.y) * this->grid_size.y + (this->pixel.x - this->init_pixel.x)) * 4;
-            
-            this->pixels[index] = pixel_color.r;
-            this->pixels[index + 1] = pixel_color.g;
-            this->pixels[index + 2] = pixel_color.b;
-            this->pixels[index + 3] = pixel_color.a;
-            this->next_pixel();
-        }
     }
 
     void Object::configure_color(Interval interval, sf::Color color){
@@ -428,12 +324,6 @@ namespace PerlinNoise{
         return color;
     }
 
-    void Object::destroy(){
-        delete this->pixels;
-        this->pixels = nullptr;
-        this->pixels_color.clear();
-    }
-
     void new_noise(std::string noise_name, float frequence, float amplitude, int octave, long long seed, int cell_size, sf::Vector2i grid_max_size){
         if(exists(noise_name) == false)
             all_noises.push_back(new Object(noise_name, frequence, amplitude, octave, seed, cell_size, grid_max_size));
@@ -459,8 +349,8 @@ namespace PerlinNoise{
         if(all_noises.empty() == false){
             for(auto noise : all_noises){
                 if(noise != nullptr){
-                    noise->destroy();
                     delete noise;
+                    noise = nullptr;
                 }
             }
         }
@@ -471,7 +361,6 @@ namespace PerlinNoise{
     void remove(std::string name){
         for(auto noise : all_noises){
             if(noise->get_name() == name){
-                noise->destroy();
                 delete noise;
                 all_noises.remove(noise);
                 break;
@@ -481,8 +370,8 @@ namespace PerlinNoise{
 
     void clear(){
         for(auto& noise : all_noises){
-            noise->destroy();
             delete noise;
+            noise = nullptr;
         }
         all_noises.clear();
     }

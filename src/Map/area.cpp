@@ -126,26 +126,19 @@ namespace Map{
         if(area_can_be_draw){
             for(int y = 0; y < this->size.y && this->configured && !this->structure_exists; y++){
                 for(int x = 0; x < this->size.x && this->configured && !this->structure_exists; x++){
-                    MapElement::Environment* environment = this->get_environment_at(x, y);
-                    environment_pos_on_window = environment->get_window_position_on(map);
-                    environment_pos = environment->get_map_position();
+                    MapElement::Environment environment(this->all_elements[x][y], {float(18*this->map_position.x + x), float(18*this->map_position.y + y)});
+                    environment_pos_on_window = environment.get_window_position_on(map);
+                    environment_pos = environment.get_map_position();
                     
                     if(-32*map->get_scale().x < environment_pos_on_window.x && environment_pos_on_window.x < window_size.x
                         && -32*map->get_scale().y < environment_pos_on_window.y && environment_pos_on_window.y < window_size.y
-                        && environment->get_environment_element() != MapElement::WorldContent::nothing){
+                        && environment.get_environment_element() != MapElement::WorldContent::nothing){
 
                         if(environment_pos.x == (int)player_pos.x && environment_pos.y == (int)player_pos.y)
-                            environment->draw_to(map, sf::Color::Green);
-                        else if(environment->is_zombie_path())
-                            environment->draw_to(map, sf::Color::Yellow);
-                        else if(environment->is_path_finding())
-                            environment->draw_to(map, sf::Color::Blue);
+                            environment.draw_to(map, sf::Color::Green);
                         else
-                            environment->draw_to(map);
-                        environment->set_zombie_path_to(false);
-                        environment->set_path_finding_to(false);
+                            environment.draw_to(map);
                     }
-                    delete environment;
                 }
             }
         }
@@ -191,6 +184,12 @@ namespace Map{
             vector.clear();
         this->all_elements.clear();
         this->all_elements_visit_for_pathfinding.clear();
+        for(auto g_value : this->all_elements_g_values_for_pathfinding){
+            if(g_value.second != nullptr){
+                delete g_value.second;
+                g_value.second = nullptr;
+            }
+        }
         this->all_elements_g_values_for_pathfinding.clear();
     }
 

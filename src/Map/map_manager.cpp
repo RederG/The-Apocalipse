@@ -541,6 +541,9 @@ namespace Map{
         for(auto& working_area : this->all_working_areas)
             working_area = nullptr;
         this->all_working_areas.clear();
+        for(auto& working_area : this->all_updating_areas)
+            working_area = nullptr;
+        this->all_updating_areas.clear();
         for(auto& area_group : this->all_areas_group){
             area_group->clear();
             delete area_group;

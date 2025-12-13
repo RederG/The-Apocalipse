@@ -32,7 +32,7 @@ target_link_directories(THE_APOCALIPSE
 )
 
 target_link_libraries(THE_APOCALIPSE
-    sfml-window
-    sfml-system
-    sfml-graphics
+    sfml-window-d
+    sfml-system-d
+    sfml-graphics-d
 )
